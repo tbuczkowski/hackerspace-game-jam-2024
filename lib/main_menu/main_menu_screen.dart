@@ -51,6 +51,13 @@ class MainMenuScreen extends StatelessWidget {
             ),
             _gap,
             MyButton(
+              onPressed: () {
+                GoRouter.of(context).go('/3d_renderer');
+              },
+              child: const Text('3D Renderer'),
+            ),
+            _gap,
+            MyButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
               child: const Text('Settings'),
             ),

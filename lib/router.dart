@@ -4,12 +4,12 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hackerspace_game_jam_2024/3d_renderer/3d_renderer_page.dart';
 import 'package:provider/provider.dart';
 
 import 'game_internals/score.dart';
 import 'level_selection/level_selection_screen.dart';
 import 'level_selection/levels.dart';
-import 'main_menu/main_menu_screen.dart';
 import 'play_session/play_session_screen.dart';
 import 'settings/settings_screen.dart';
 import 'style/my_transition.dart';
@@ -22,7 +22,8 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const MainMenuScreen(key: Key('main menu')),
+      // builder: (context, state) => const MainMenuScreen(key: Key('main menu')),
+      builder: (context, state) => const ThreeDRendererPage(key: Key('3d_renderer')),
       routes: [
         GoRoute(
             path: 'play',
@@ -38,8 +39,7 @@ final router = GoRouter(
                 path: 'session/:level',
                 pageBuilder: (context, state) {
                   final levelNumber = int.parse(state.pathParameters['level']!);
-                  final level =
-                      gameLevels.singleWhere((e) => e.number == levelNumber);
+                  final level = gameLevels.singleWhere((e) => e.number == levelNumber);
                   return buildMyTransition<void>(
                     key: ValueKey('level'),
                     color: context.watch<Palette>().backgroundPlaySession,
@@ -79,8 +79,11 @@ final router = GoRouter(
             ]),
         GoRoute(
           path: 'settings',
-          builder: (context, state) =>
-              const SettingsScreen(key: Key('settings')),
+          builder: (context, state) => const SettingsScreen(key: Key('settings')),
+        ),
+        GoRoute(
+          path: '3d_renderer',
+          builder: (context, state) => const ThreeDRendererPage(key: Key('3d_renderer')),
         ),
       ],
     ),
