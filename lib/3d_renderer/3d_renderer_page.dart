@@ -8,28 +8,28 @@ import 'package:vector_math/vector_math_64.dart' hide Colors;
 
 final Object3D cube = Object3D(
   vertices: [
-    Vector3(-0.5, -0.5, -0.5),
-    Vector3(-0.5, -0.5, 0.5),
-    Vector3(0.5, -0.5, 0.5),
-    Vector3(0.5, -0.5, -0.5),
-    Vector3(-0.5, 0.5, 0.5),
-    Vector3(0.5, 0.5, 0.5),
-    Vector3(0.5, 0.5, -0.5),
-    Vector3(-0.5, 0.5, -0.5),
+    Vector3(0.0 - 0.5, 0.0 - 0.5, 0.0 - 0.5),
+    Vector3(0.0 - 0.5, 0.0 - 0.5, 1.0 - 0.5),
+    Vector3(0.0 - 0.5, 1.0 - 0.5, 0.0 - 0.5),
+    Vector3(0.0 - 0.5, 1.0 - 0.5, 1.0 - 0.5),
+    Vector3(1.0 - 0.5, 0.0 - 0.5, 0.0 - 0.5),
+    Vector3(1.0 - 0.5, 0.0 - 0.5, 1.0 - 0.5),
+    Vector3(1.0 - 0.5, 1.0 - 0.5, 0.0 - 0.5),
+    Vector3(1.0 - 0.5, 1.0 - 0.5, 1.0 - 0.5),
   ],
   triangles: [
-    (0, 1, 2),
-    (0, 2, 3),
-    (1, 5, 2),
-    (1, 4, 5),
-    (2, 5, 3),
-    (3, 5, 6),
-    (0, 3, 6),
-    (0, 6, 7),
-    (1, 0, 4),
-    (0, 7, 4),
-    (7, 6, 5),
-    (7, 5, 4),
+    (1 - 1, 7 - 1, 5 - 1),
+    (1 - 1, 3 - 1, 7 - 1),
+    (1 - 1, 4 - 1, 3 - 1),
+    (1 - 1, 2 - 1, 4 - 1),
+    (3 - 1, 8 - 1, 7 - 1),
+    (3 - 1, 4 - 1, 8 - 1),
+    (5 - 1, 7 - 1, 8 - 1),
+    (5 - 1, 8 - 1, 6 - 1),
+    (1 - 1, 5 - 1, 6 - 1),
+    (1 - 1, 6 - 1, 2 - 1),
+    (2 - 1, 6 - 1, 8 - 1),
+    (2 - 1, 8 - 1, 4 - 1),
   ],
 );
 
@@ -50,41 +50,49 @@ class _ThreeDRendererPageState extends State<ThreeDRendererPage> {
         body: Stack(
           children: [
             SizedBox.expand(
-              child: View3D(
-                object: cube,
-                xRotation: xRotation,
-                yRotation: yRotation,
-                zRotation: zRotation,
+              child: GestureDetector(
+                onPanUpdate: (DragUpdateDetails details) {
+                  setState(() {
+                    xRotation += details.delta.dy * 0.001;
+                    zRotation += details.delta.dx * 0.001;
+                  });
+                },
+                child: View3D(
+                  object: cube,
+                  xRotation: xRotation,
+                  yRotation: yRotation,
+                  zRotation: zRotation,
+                ),
               ),
             ),
-            Column(
-              children: [
-                Slider(
-                  value: xRotation,
-                  onChanged: (double value) {
-                    setState(() {
-                      xRotation = value;
-                    });
-                  },
-                ),
-                Slider(
-                  value: yRotation,
-                  onChanged: (double value) {
-                    setState(() {
-                      yRotation = value;
-                    });
-                  },
-                ),
-                Slider(
-                  value: zRotation,
-                  onChanged: (double value) {
-                    setState(() {
-                      zRotation = value;
-                    });
-                  },
-                ),
-              ],
-            ),
+            // Column(
+            //   children: [
+            //     Slider(
+            //       value: xRotation,
+            //       onChanged: (double value) {
+            //         setState(() {
+            //           xRotation = value;
+            //         });
+            //       },
+            //     ),
+            //     Slider(
+            //       value: yRotation,
+            //       onChanged: (double value) {
+            //         setState(() {
+            //           yRotation = value;
+            //         });
+            //       },
+            //     ),
+            //     Slider(
+            //       value: zRotation,
+            //       onChanged: (double value) {
+            //         setState(() {
+            //           zRotation = value;
+            //         });
+            //       },
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       );
@@ -152,7 +160,7 @@ class _View3DPainter extends CustomPainter {
           );
           final Vector3 normal = (v2 - v1).cross(v3 - v1).normalized();
           final double alignment = ((v1 - cameraPosition).normalized()).dot(normal);
-          return !alignment.isNegative;
+          return alignment.isNegative;
           // return triangle;
         })
         .indexed
