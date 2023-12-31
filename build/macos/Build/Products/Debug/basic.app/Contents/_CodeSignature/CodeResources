@@ -23,10 +23,10 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			Oep7t05+vNkGgDLI7X6mJGkzPl8=
+			JCWUoa+Y8cnm/t0UGqQFevKsjms=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"39ea7bb74e7ebcd9068032c8ed7ea62469333e5f"</string>
+			<string>cdhash H"242594a1af98f1c9e6fedd141aa4057af2ac8e6b"</string>
 		</dict>
 		<key>Frameworks/FlutterMacOS.framework</key>
 		<dict>
