@@ -170,6 +170,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "flutter_shaders",
+      "rootUri": "file:///Users/tymoteuszbuczkowski/.pub-cache/hosted/pub.dev/flutter_shaders-0.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/tymoteuszbuczkowski/Workspace/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -602,7 +608,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-12-26T12:22:36.075373Z",
+  "generated": "2023-12-31T13:11:58.305502Z",
   "generator": "pub",
   "generatorVersion": "3.1.4"
 }

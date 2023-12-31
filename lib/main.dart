@@ -59,8 +59,7 @@ class MyApp extends StatelessWidget {
           Provider(create: (context) => Palette()),
           ChangeNotifierProvider(create: (context) => PlayerProgress()),
           // Set up audio.
-          ProxyProvider2<AppLifecycleStateNotifier, SettingsController,
-              AudioController>(
+          ProxyProvider2<AppLifecycleStateNotifier, SettingsController, AudioController>(
             create: (context) => AudioController(),
             update: (context, lifecycleNotifier, settings, audio) {
               audio!.attachDependencies(lifecycleNotifier, settings);
@@ -75,6 +74,7 @@ class MyApp extends StatelessWidget {
           final palette = context.watch<Palette>();
 
           return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
             title: 'My Flutter Game',
             theme: ThemeData.from(
               colorScheme: ColorScheme.fromSeed(

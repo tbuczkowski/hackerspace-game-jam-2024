@@ -5,6 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/3d_renderer/3d_renderer_page.dart';
+import 'package:hackerspace_game_jam_2024/raymarching/raymarching_page.dart';
 import 'package:provider/provider.dart';
 
 import 'game_internals/score.dart';
@@ -23,7 +24,7 @@ final router = GoRouter(
     GoRoute(
       path: '/',
       // builder: (context, state) => const MainMenuScreen(key: Key('main menu')),
-      builder: (context, state) => const ThreeDRendererPage(key: Key('3d_renderer')),
+      builder: (context, state) => const RaymarchingPage(),
       routes: [
         GoRoute(
             path: 'play',
