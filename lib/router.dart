@@ -5,6 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/3d_renderer/3d_renderer_page.dart';
+import 'package:hackerspace_game_jam_2024/gamepads/gamepads_input_test_page.dart';
 import 'package:hackerspace_game_jam_2024/main_menu/main_menu_screen.dart';
 import 'package:hackerspace_game_jam_2024/raymarching/raymarching_page.dart';
 import 'package:provider/provider.dart';
@@ -88,7 +89,11 @@ final router = GoRouter(
         ),
         GoRoute(
           path: 'raymarching',
-          builder: (context, state) => const RaymarchingPage(key: Key('3d_renderer')),
+          builder: (context, state) => const RaymarchingPage(key: Key('raymarching')),
+        ),
+        GoRoute(
+          path: 'gamepads',
+          builder: (context, state) => const GamepadsInputTestPage(key: Key('gamepads')),
         ),
       ],
     ),

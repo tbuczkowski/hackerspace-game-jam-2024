@@ -65,6 +65,13 @@ class MainMenuScreen extends StatelessWidget {
             ),
             _gap,
             MyButton(
+              onPressed: () {
+                GoRouter.of(context).go('/gamepads');
+              },
+              child: const Text('Gamepad Input Test'),
+            ),
+            _gap,
+            MyButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
               child: const Text('Settings'),
             ),
