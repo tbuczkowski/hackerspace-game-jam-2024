@@ -37,22 +37,22 @@ float signedDistanceOctahedron(vec3 p, float size, vec3 position) {
 
 float map(vec3 p) {
     vec3 q = p;
-    q.xy = fract(p.xy + vec2(0, -currentTime/2000)) - 0.5;
-    q.z =  mod(q.z, .25) - .125; // spacing: .25
-    float sphere1 = signedDistanceSphere(q, 0.15, vec3(0, 0, 0));
-    float sphere2 = signedDistanceOctahedron(p, 1, vec3(sin(currentTime/1000) * 0.7, cos(currentTime/1000) * 0.7, 0));
-    return computeUnion(sphere1, sphere2, 0.35);
+    q.xy = p.xy - vec2(0.5 * cos(currentTime/1000), 0.5 * sin(currentTime/1000));
+    return computeUnion(signedDistanceSphere(q, 0.5, vec3(0, 0, 0)), signedDistanceOctahedron(p, 0.5, vec3(0, 0, 0)), 0.1);
 }
 
 void main() {
+    float dx = 15.0 * (1.0/256.0);
+    float dy = 10.0 * (1.0/256.0);
     vec2 uv = (FlutterFragCoord().xy * 2 - resolution.xy) / resolution.y;
     uv = vec2(uv.x, -uv.y);
-    vec3 rayOrigin = vec3(0,0,-3);
-    vec3 rayDirection = normalize(vec3(uv, 1));
+    vec2 pixelFactor = 0.032 * resolution;
+    uv = round(uv * pixelFactor) / pixelFactor;
+    vec3 rayOrigin = vec3(uv,-1);
+    vec3 rayDirection = normalize(vec3(0, 0, 1));
     vec3 color = vec3(0);
 
     float distanceTraveled = 0;
-
     for(int i = 0; i < 80; i++) {
         vec3 p = rayOrigin + rayDirection * distanceTraveled;
         float d = map(p);
@@ -62,7 +62,7 @@ void main() {
         }
     }
 
-    color = palette(distanceTraveled*(0.09 + (sin(currentTime/1000) * 0.04)));
+    color = vec3(distanceTraveled * 0.75);
 
-    fragColor = vec4(color, 1);
+    fragColor = vec4(1- color, distanceTraveled > 100 ? 0 : 1);
 }
