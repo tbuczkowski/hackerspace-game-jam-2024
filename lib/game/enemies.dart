@@ -5,13 +5,11 @@ import 'package:hackerspace_game_jam_2024/game/game.dart';
 
 class WaterEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame> {
   final Vector2 gridPosition;
-  double xOffset;
 
   final Vector2 velocity = Vector2.zero();
 
   WaterEnemy({
     required this.gridPosition,
-    required this.xOffset,
   }) : super(size: Vector2.all(64), anchor: Anchor.bottomLeft);
 
   @override
@@ -25,7 +23,7 @@ class WaterEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>
       ),
     );
     position = Vector2(
-      (gridPosition.x * size.x) + xOffset,
+      (gridPosition.x * size.x),
       game.size.y - (gridPosition.y * size.y),
     );
     add(RectangleHitbox(collisionType: CollisionType.passive));
@@ -44,8 +42,8 @@ class WaterEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>
   @override
   void update(double dt) {
     velocity.x = game.objectSpeed;
-    position += velocity * dt;
-    if (position.x < -size.x) removeFromParent();
+    // position += velocity * dt;
+    // if (position.x < -size.x) removeFromParent();
     super.update(dt);
   }
 }

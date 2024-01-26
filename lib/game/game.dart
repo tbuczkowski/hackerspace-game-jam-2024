@@ -11,7 +11,8 @@ import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/player.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
 
-class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
+class ASDGame extends FlameGame
+    with HasCollisionDetection, HasKeyboardHandlerComponents {
   late Player _player;
   double objectSpeed = 0.0;
   late double lastBlockXPosition = 0.0;
@@ -41,9 +42,9 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       'water_enemy.png',
     ]);
 
-    camera.viewfinder.anchor = Anchor.topLeft;
-
     initializeGame();
+
+    return super.onLoad();
   }
 
   void loadGameSegments(int segmentIndex, double xPositionOffset) {
@@ -53,21 +54,18 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
           world.add(
             GroundBlock(
               gridPosition: block.gridPosition,
-              xOffset: xPositionOffset,
             ),
           );
           break;
         case PlatformBlock:
-          add(PlatformBlock(
+          world.add(PlatformBlock(
             gridPosition: block.gridPosition,
-            xOffset: xPositionOffset,
           ));
           break;
         case Star:
           world.add(
             Star(
               gridPosition: block.gridPosition,
-              xOffset: xPositionOffset,
             ),
           );
           break;
@@ -75,7 +73,6 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
           world.add(
             WaterEnemy(
               gridPosition: block.gridPosition,
-              xOffset: xPositionOffset,
             ),
           );
           break;
@@ -88,14 +85,14 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     final segmentsToLoad = (size.x / 640).ceil();
     segmentsToLoad.clamp(0, segments.length);
 
-    for (var i = 0; i <= segmentsToLoad; i++) {
-      loadGameSegments(i, (640 * i).toDouble());
-    }
+    loadGameSegments(0, 0);
 
     _player = Player(
       position: Vector2(128, canvasSize.y - 256),
     );
     world.add(_player);
     camera.viewport.add(Hud());
+    camera.follow(_player, maxSpeed: 500);
+    camera.viewfinder.anchor = Anchor.center;
   }
 }

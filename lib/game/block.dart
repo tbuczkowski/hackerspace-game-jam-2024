@@ -19,10 +19,10 @@ class Block {
 
 final segments = [
   segment0,
-  segment1,
-  segment2,
-  segment3,
-  segment4,
+  // segment1,
+  // segment2,
+  // segment3,
+  // segment4,
 ];
 
 final segment0 = [
@@ -41,6 +41,37 @@ final segment0 = [
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(8, 3), PlatformBlock),
   Block(Vector2(9, 0), GroundBlock),
+  Block(Vector2(10, 0), GroundBlock),
+  Block(Vector2(11, 0), GroundBlock),
+  Block(Vector2(12, 0), GroundBlock),
+  Block(Vector2(13, 0), GroundBlock),
+  Block(Vector2(14, 0), GroundBlock),
+  Block(Vector2(15, 0), GroundBlock),
+  Block(Vector2(15, 1), WaterEnemy),
+  Block(Vector2(15, 3), PlatformBlock),
+  Block(Vector2(16, 0), GroundBlock),
+  Block(Vector2(16, 3), PlatformBlock),
+  Block(Vector2(17, 0), GroundBlock),
+  Block(Vector2(17, 3), PlatformBlock),
+  Block(Vector2(18, 0), GroundBlock),
+  Block(Vector2(18, 3), PlatformBlock),
+  Block(Vector2(19, 0), GroundBlock),
+  Block(Vector2(20, 0), GroundBlock),
+  Block(Vector2(21, 0), GroundBlock),
+  Block(Vector2(22, 0), GroundBlock),
+  Block(Vector2(23, 0), GroundBlock),
+  Block(Vector2(24, 0), GroundBlock),
+  Block(Vector2(25, 0), GroundBlock),
+  Block(Vector2(25, 1), WaterEnemy),
+  Block(Vector2(25, 3), PlatformBlock),
+  Block(Vector2(26, 0), GroundBlock),
+  Block(Vector2(26, 3), PlatformBlock),
+  Block(Vector2(26, 4), Star),
+  Block(Vector2(27, 0), GroundBlock),
+  Block(Vector2(27, 3), PlatformBlock),
+  Block(Vector2(28, 0), GroundBlock),
+  Block(Vector2(28, 3), PlatformBlock),
+  Block(Vector2(29, 0), GroundBlock),
 ];
 
 final segment1 = [
