@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -11,7 +13,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
   final Vector2 velocity = Vector2.zero();
   final double horizontalMoveSpeed = 300;
   static const double jumpHeight = 250;
-  static const double jumpDuration = 0.5;
+  static const double jumpDistance = 150;
 
   double? jumpTime;
   bool isOnGround = false;
@@ -45,7 +47,8 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
     if (jumpTime == null && isOnGround) {
       jumpTime = keysPressed.contains(LogicalKeyboardKey.space) ? 0 : null;
       if (jumpTime != null) {
-        velocity.y = -2 * jumpHeight / jumpDuration;
+        final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 300);
+        velocity.y = (-2 * jumpHeight * horizontalComponent) / (jumpDistance);
         isOnGround = false;
       }
     }
@@ -61,15 +64,15 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
       flipHorizontally();
     }
 
-    const double gravity = (2 * jumpHeight) / (jumpDuration * jumpDuration);
+    final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 300);
+
+    final double gravity = (2 * jumpHeight * horizontalComponent * horizontalComponent) / (jumpDistance * jumpDistance);
 
     if (jumpTime != null) {
       jumpTime = jumpTime! + dt;
     }
     velocity.y += gravity * dt;
-
-    print(velocity.y);
-
+    print(velocity);
     position += velocity * dt;
     super.update(dt);
   }
