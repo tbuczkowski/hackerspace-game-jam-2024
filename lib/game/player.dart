@@ -118,6 +118,11 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
     if (other is WaterEnemy) {
       hit();
     }
+
+    if (other is Star) {
+      other.removeFromParent();
+      game.starsCollected++;
+    }
     super.onCollision(intersectionPoints, other);
   }
 
@@ -125,6 +130,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
 // to make it blink.
   void hit() {
     if (!hitByEnemy) {
+      game.health--;
       hitByEnemy = true;
     }
     add(
@@ -132,7 +138,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
         EffectController(
           alternate: true,
           duration: 0.1,
-          repeatCount: 6,
+          repeatCount: 5,
         ),
       )..onComplete = () {
           hitByEnemy = false;
