@@ -2,21 +2,18 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/services.dart';
+import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
-import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
-import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
 
 class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 velocity = Vector2.zero();
-  final double moveSpeed = 200;
-  final Vector2 fromAbove = Vector2(0, -1);
-  final double gravity = 15;
-  final double jumpSpeed = 600;
-  final double terminalVelocity = 150;
+  final double horizontalMoveSpeed = 300;
+  static const double jumpHeight = 250;
+  static const double jumpDuration = 0.5;
 
-  bool hasJumped = false;
+  double? jumpTime;
   bool isOnGround = false;
   int horizontalDirection = 0;
   bool hitByEnemy = false;
@@ -45,44 +42,33 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
         (keysPressed.contains(LogicalKeyboardKey.keyA) || keysPressed.contains(LogicalKeyboardKey.arrowLeft)) ? -1 : 0;
     horizontalDirection +=
         (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) ? 1 : 0;
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
+    if (jumpTime == null && isOnGround) {
+      jumpTime = keysPressed.contains(LogicalKeyboardKey.space) ? 0 : null;
+      if (jumpTime != null) {
+        velocity.y = -2 * jumpHeight / jumpDuration;
+        isOnGround = false;
+      }
+    }
     return true;
   }
 
   @override
   void update(double dt) {
-    velocity.x = horizontalDirection * moveSpeed;
-    position += velocity * dt;
+    velocity.x = horizontalDirection * horizontalMoveSpeed;
     if (horizontalDirection < 0 && scale.x > 0) {
       flipHorizontally();
     } else if (horizontalDirection > 0 && scale.x < 0) {
       flipHorizontally();
     }
-    // Apply basic gravity
-    velocity.y += gravity;
 
-// Determine if ember has jumped
-    if (hasJumped) {
-      if (isOnGround) {
-        velocity.y = -jumpSpeed;
-        isOnGround = false;
-      }
-      hasJumped = false;
-    }
+    const double gravity = (2 * jumpHeight) / (jumpDuration * jumpDuration);
 
-// Prevent ember from jumping to crazy fast as well as descending too fast and
-// crashing through the ground or a platform.
-    velocity.y = velocity.y.clamp(-jumpSpeed, terminalVelocity);
-    game.objectSpeed = 0;
-// Prevent ember from going backwards at screen edge.
-    if (position.x - 36 <= 0 && horizontalDirection < 0) {
-      velocity.x = 0;
+    if (jumpTime != null) {
+      jumpTime = jumpTime! + dt;
     }
-// Prevent ember from going beyond half screen.
-    if (position.x + 64 >= game.size.x / 2 && horizontalDirection > 0) {
-      velocity.x = 0;
-      game.objectSpeed = -moveSpeed;
-    }
+    velocity.y += gravity * dt;
+
+    print(velocity.y);
 
     position += velocity * dt;
     super.update(dt);
@@ -90,10 +76,10 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is GroundBlock || other is PlatformBlock) {
+    if (isTerrain(other)) {
       if (intersectionPoints.length == 2) {
         // Calculate the collision normal and separation distance.
-        final mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
+        final Vector2 mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
 
         final collisionNormal = absoluteCenter - mid;
         final separationDistance = (size.x / 2) - collisionNormal.length;
@@ -101,8 +87,13 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
 
         // If collision normal is almost upwards,
         // ember must be on ground.
-        if (fromAbove.dot(collisionNormal) > 0.9) {
+        if (Vector2(0, -1).dot(collisionNormal) > 0.9) {
           isOnGround = true;
+          jumpTime = null;
+          velocity.y = 0;
+        }
+        if (Vector2(0, 1).dot(collisionNormal) > 0.9) {
+          velocity.y = 0;
         }
 
         // Resolve collision by moving ember along

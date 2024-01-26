@@ -15,6 +15,9 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GameWidget(game: _game);
+    return Focus(
+      onKey: (focus, onKey) => KeyEventResult.handled,
+      child: GameWidget(game: _game),
+    );
   }
 }

@@ -27,6 +27,9 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   }
 
   @override
+  bool get debugMode => true;
+
+  @override
   Future<void> onLoad() async {
     await images.loadAll([
       'block.png',
@@ -90,7 +93,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     }
 
     _player = Player(
-      position: Vector2(128, canvasSize.y - 128),
+      position: Vector2(128, canvasSize.y - 256),
     );
     world.add(_player);
     camera.viewport.add(Hud());

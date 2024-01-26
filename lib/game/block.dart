@@ -4,6 +4,10 @@ import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
 
+bool isTerrain(Component component) {
+  return component is GroundBlock || component is PlatformBlock;
+}
+
 class Block {
   // gridPosition position is always segment based X,Y.
   // 0,0 is the bottom left corner.
