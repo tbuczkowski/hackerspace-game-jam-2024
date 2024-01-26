@@ -1,7 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-import 'asd.dart';
+import 'game.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
