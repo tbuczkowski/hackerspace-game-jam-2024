@@ -8,8 +8,6 @@ import 'package:hackerspace_game_jam_2024/game/game_state.dart';
 import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
-import '../audio/sounds.dart';
-import '../game/level/levels.dart';
 import '../settings/settings.dart';
 import '../style/my_button.dart';
 import '../style/palette.dart';
@@ -47,7 +45,6 @@ class MainMenuScreen extends StatelessWidget {
             MyButton(
               onPressed: () {
                 GameState.reset();
-                audioController.playSfx(SfxType.buttonTap);
                 GoRouter.of(context).go('/game_page');
               },
               child: const Text('Play'),
@@ -70,19 +67,6 @@ class MainMenuScreen extends StatelessWidget {
             MyButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
               child: const Text('Settings'),
-            ),
-            _gap,
-            Padding(
-              padding: const EdgeInsets.only(top: 32),
-              child: ValueListenableBuilder<bool>(
-                valueListenable: settingsController.audioOn,
-                builder: (context, audioOn, child) {
-                  return IconButton(
-                    onPressed: () => settingsController.toggleAudioOn(),
-                    icon: Icon(audioOn ? Icons.volume_up : Icons.volume_off),
-                  );
-                },
-              ),
             ),
             _gap,
             const Text('Music by Mr Smith'),
