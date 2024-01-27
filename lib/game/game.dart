@@ -54,7 +54,8 @@ class ASDGame extends FlameGame
       'star.png',
       'water_enemy.png',
       'wall.png',
-      'gate.png'
+      'gate.png',
+      'hobo.png',
     ]);
 
     initializeGame();
@@ -63,6 +64,7 @@ class ASDGame extends FlameGame
   }
 
   Future<void> loadLevel() async {
+    print("Loading level $currentLevel");
     try {
       final LevelConfig levelConfig =
           await LevelConfig.load('assets/levels/$currentLevel.json');
