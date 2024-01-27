@@ -5,36 +5,33 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
+import 'package:hackerspace_game_jam_2024/game/game_state.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/hud.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
-import 'package:hackerspace_game_jam_2024/game/level/levels.dart';
 import 'package:hackerspace_game_jam_2024/game/player/flying_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
 
 import 'background_component.dart';
 
-List<LevelConfig> _levelConfigs = [];
-
 class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
   late final Player _player;
   late final CameraTarget _cameraTarget;
+  late final GameState _gameState;
 
   double objectSpeed = 0.0;
   late double lastBlockXPosition = 0.0;
   late UniqueKey lastBlockKey;
   late Level level;
   late LevelPainter _levelPainter;
-  int starsCollected = 0;
+  int currentScore = 0;
   int health = 3;
-
-  int currentLevel;
 
   final LevelFactory _levelFactory = LevelFactory(LevelFactoryConfig.build());
 
-  ASDGame(this.currentLevel);
+  ASDGame();
 
   @override
   Color backgroundColor() {
@@ -61,21 +58,17 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       'hobo.png',
     ]);
 
-    initializeGame();
+    await initializeGame();
 
     return super.onLoad();
   }
 
   Future<void> loadLevel() async {
-    print("Loading level $currentLevel");
     try {
-      if (_levelConfigs.isEmpty) {
-        _levelConfigs.addAll(await loadLevels());
-      }
+      _gameState = await GameState.getInstance();
+      final LevelConfig levelConfig = _gameState.getCurrentLevelConfig();
 
-      final LevelConfig levelConfig = _levelConfigs[currentLevel];
-
-      // final LevelConfig levelConfig = await LevelConfig.load('assets/levels/$currentLevel.json');
+      print("Loading level ${_gameState.getCurrentLevelConfig().filename}");
       level = await _levelFactory.build(levelConfig);
     } catch (ex) {
       level = demoLevel;
@@ -86,18 +79,10 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   Future<void> initializeGame() async {
     await loadLevel();
 
-    // Assume that size.x < 3200
-    final segmentsToLoad = (size.x / 640).ceil();
-    segmentsToLoad.clamp(0, level.blocks.length);
-
     _levelPainter.paintLevel(level);
+    _player = _levelPainter.paintPlayer(level);
 
-    _player = (level.playerMovementType == PlayerMovementType.walking)
-        ? WalkingPlayer(position: Vector2(128, 128))
-        : FlyingPlayer(position: Vector2(128, 128));
     _cameraTarget = CameraTarget(player: _player);
-
-    world.add(_player);
     world.add(_cameraTarget);
     camera.viewport.add(Hud());
     camera.follow(_cameraTarget, maxSpeed: 1000);
@@ -107,12 +92,12 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   }
 
   void changeLevel() async {
-    //
-    if (currentLevel + 1 < _levelConfigs.length) {
-      currentLevel++;
-      GoRouter.of(buildContext!).replace('/game_page/$currentLevel');
-    } else {
+    if (_gameState.isLastLevel()) {
+      GameState.reset();
       GoRouter.of(buildContext!).replace('/');
+    } else {
+      _gameState.nextLevel(currentScore);
+      GoRouter.of(buildContext!).replace('/game_page');
     }
   }
 }

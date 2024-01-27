@@ -53,7 +53,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
 
     if (other is Star) {
       other.removeFromParent();
-      game.starsCollected++;
+      game.currentScore++;
     }
 
     super.onCollision(intersectionPoints, other);
