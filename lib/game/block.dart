@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:hackerspace_game_jam_2024/game/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
 
@@ -17,15 +18,17 @@ class Block {
   Block(this.gridPosition, this.blockType);
 }
 
+Level demoLevel = Level(blocks: _segment0, startingPosition: Vector2.zero());
+
 final segments = [
-  segment0,
+  _segment0,
   // segment1,
   // segment2,
   // segment3,
   // segment4,
 ];
 
-final segment0 = [
+final _segment0 = [
   Block(Vector2(0, 0), GroundBlock),
   Block(Vector2(1, 0), GroundBlock),
   Block(Vector2(2, 0), GroundBlock),
@@ -74,7 +77,7 @@ final segment0 = [
   Block(Vector2(29, 0), GroundBlock),
 ];
 
-final segment1 = [
+final _segment1 = [
   Block(Vector2(0, 0), GroundBlock),
   Block(Vector2(1, 0), GroundBlock),
   Block(Vector2(1, 1), PlatformBlock),
@@ -92,7 +95,7 @@ final segment1 = [
   Block(Vector2(9, 0), GroundBlock),
 ];
 
-final segment2 = [
+final _segment2 = [
   Block(Vector2(0, 0), GroundBlock),
   Block(Vector2(1, 0), GroundBlock),
   Block(Vector2(2, 0), GroundBlock),
@@ -113,7 +116,7 @@ final segment2 = [
   Block(Vector2(9, 0), GroundBlock),
 ];
 
-final segment3 = [
+final _segment3 = [
   Block(Vector2(0, 0), GroundBlock),
   Block(Vector2(1, 0), GroundBlock),
   Block(Vector2(1, 1), WaterEnemy),
@@ -129,7 +132,7 @@ final segment3 = [
   Block(Vector2(9, 0), GroundBlock),
 ];
 
-final segment4 = [
+final _segment4 = [
   Block(Vector2(0, 0), GroundBlock),
   Block(Vector2(1, 0), GroundBlock),
   Block(Vector2(2, 0), GroundBlock),

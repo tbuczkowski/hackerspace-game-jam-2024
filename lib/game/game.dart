@@ -7,6 +7,9 @@ import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/hud.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
 import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/player.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
@@ -18,8 +21,12 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   double objectSpeed = 0.0;
   late double lastBlockXPosition = 0.0;
   late UniqueKey lastBlockKey;
+  late Level level;
+  late LevelPainter _levelPainter;
   int starsCollected = 0;
   int health = 3;
+
+  final LevelFactory _levelFactory = LevelFactory(LevelFactoryConfig.build());
 
   ASDGame();
 
@@ -33,6 +40,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
 
   @override
   Future<void> onLoad() async {
+    _levelPainter = LevelPainter(gameRef: this);
+
     await images.loadAll([
       'block.png',
       'ember.png',
@@ -48,45 +57,55 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     return super.onLoad();
   }
 
-  void loadGameSegments(int segmentIndex, double xPositionOffset) {
-    for (final block in segments[segmentIndex]) {
-      switch (block.blockType) {
-        case GroundBlock:
-          world.add(
-            GroundBlock(
-              gridPosition: block.gridPosition,
-            ),
-          );
-          break;
-        case PlatformBlock:
-          world.add(PlatformBlock(
-            gridPosition: block.gridPosition,
-          ));
-          break;
-        case Star:
-          world.add(
-            Star(
-              gridPosition: block.gridPosition,
-            ),
-          );
-          break;
-        case WaterEnemy:
-          world.add(
-            WaterEnemy(
-              gridPosition: block.gridPosition,
-            ),
-          );
-          break;
-      }
-    }
-  }
+  // void loadGameSegments(double xPositionOffset) {
+  //   for (final block in level.blocks) {
+  //     switch (block.blockType) {
+  //       case GroundBlock:
+  //         world.add(
+  //           GroundBlock(
+  //             gridPosition: block.gridPosition,
+  //           ),
+  //         );
+  //         break;
+  //       case PlatformBlock:
+  //         world.add(PlatformBlock(
+  //           gridPosition: block.gridPosition,
+  //         ));
+  //         break;
+  //       case Star:
+  //         world.add(
+  //           Star(
+  //             gridPosition: block.gridPosition,
+  //           ),
+  //         );
+  //         break;
+  //       case WaterEnemy:
+  //         world.add(
+  //           WaterEnemy(
+  //             gridPosition: block.gridPosition,
+  //           ),
+  //         );
+  //         break;
+  //     }
+  //   }
+  // }
 
-  void initializeGame() {
+  void initializeGame() async {
+    try {
+      level = await _levelFactory.build(
+          LevelConfig(filename: 'assets/levels/level.bmp'));
+    } catch(ex) {
+      level = demoLevel;
+      print(ex);
+    }
+
     // Assume that size.x < 3200
     final segmentsToLoad = (size.x / 640).ceil();
-    segmentsToLoad.clamp(0, segments.length);
+    segmentsToLoad.clamp(0, level.blocks.length);
 
-    loadGameSegments(0, 0);
+    // loadGameSegments(0);
+
+    _levelPainter.paintLevel(level);
 
     _player = Player(
       position: Vector2(128, canvasSize.y - 256),
