@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
@@ -21,8 +22,9 @@ class WalkingPlayer extends Player {
         (keysPressed.contains(LogicalKeyboardKey.keyA) || keysPressed.contains(LogicalKeyboardKey.arrowLeft)) ? -1 : 0;
     horizontalDirection +=
         (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) ? 1 : 0;
+    final bool wasJumpPressed = jumpIsPressed;
     jumpIsPressed = keysPressed.contains(LogicalKeyboardKey.space);
-    if (jumpTime == null && isOnGround) {
+    if (!wasJumpPressed && jumpTime == null && isOnGround) {
       jumpTime = jumpIsPressed ? 0 : null;
       jump(jumpHeight);
     }
@@ -71,13 +73,14 @@ class WalkingPlayer extends Player {
       final Vector2 mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
 
       final collisionNormal = absoluteCenter - mid;
-      final separationDistance = (size.x / 2) - collisionNormal.length;
       collisionNormal.normalize();
 
       // If collision normal is almost upwards,
       // ember must be on ground.
-      print(velocity);
-      if (Vector2(0, -1).dot(collisionNormal) > 0.8 && velocity.y > 100 && position.y < other.position.y) {
+      if (Vector2(0, -1).dot(collisionNormal) > 0.8 &&
+          velocity.y > 100 &&
+          position.y < other.position.y &&
+          other.children.whereType<RectangleHitbox>().isNotEmpty) {
         other.kill();
         jumpTime = 0;
         jump(jumpHeight / 2);
