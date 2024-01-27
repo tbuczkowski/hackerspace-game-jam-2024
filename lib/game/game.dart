@@ -3,6 +3,7 @@ import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flame/parallax.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
@@ -13,6 +14,8 @@ import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
 import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/player.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
+
+import 'BackgroundComponent.dart';
 
 class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
   late final Player _player;
@@ -82,6 +85,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     camera.viewport.add(Hud());
     camera.follow(_cameraTarget, maxSpeed: 1000);
     camera.viewfinder.anchor = Anchor.center;
+
+    add(BackgroundComponent());
   }
 }
 
