@@ -2,7 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
-import 'package:hackerspace_game_jam_2024/game/player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 import 'package:hackerspace_game_jam_2024/game/speech_component.dart';
 
 class Hobo extends SpriteAnimationComponent

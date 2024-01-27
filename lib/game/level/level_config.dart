@@ -1,6 +1,5 @@
-import 'dart:convert';
 
-import 'package:flutter/services.dart';
+import 'package:hackerspace_game_jam_2024/game/utils/file_utils.dart';
 
 enum PlayerMovementType { walking, flying }
 
@@ -14,8 +13,7 @@ class LevelConfig {
   });
 
   static Future<LevelConfig> load(String filename) async {
-    String json = await rootBundle.loadString(filename);
-    Map<String, dynamic> raw = jsonDecode(json);
+    Map<String, dynamic> raw = await FileUtils.loadJson(filename);
 
     return LevelConfig(
       filename: raw['filename'],

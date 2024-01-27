@@ -46,7 +46,7 @@ class MainMenuScreen extends StatelessWidget {
             MyButton(
               onPressed: () {
                 audioController.playSfx(SfxType.buttonTap);
-                GoRouter.of(context).go('/game_page/${Levels.ENTRY}');
+                GoRouter.of(context).go('/game_page/0');
               },
               child: const Text('Play'),
             ),

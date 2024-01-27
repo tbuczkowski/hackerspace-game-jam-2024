@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
@@ -10,12 +11,15 @@ import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
 import 'package:hackerspace_game_jam_2024/game/level/levels.dart';
-import 'package:hackerspace_game_jam_2024/game/player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/flying_player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
 
 import 'background_component.dart';
 
-class ASDGame extends FlameGame
-    with HasCollisionDetection, HasKeyboardHandlerComponents {
+List<LevelConfig> _levelConfigs = [];
+
+class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
   late final Player _player;
   late final CameraTarget _cameraTarget;
 
@@ -27,7 +31,7 @@ class ASDGame extends FlameGame
   int starsCollected = 0;
   int health = 3;
 
-  String currentLevel;
+  int currentLevel;
 
   final LevelFactory _levelFactory = LevelFactory(LevelFactoryConfig.build());
 
@@ -66,8 +70,13 @@ class ASDGame extends FlameGame
   Future<void> loadLevel() async {
     print("Loading level $currentLevel");
     try {
-      final LevelConfig levelConfig =
-          await LevelConfig.load('assets/levels/$currentLevel.json');
+      if (_levelConfigs.isEmpty) {
+        _levelConfigs.addAll(await loadLevels());
+      }
+
+      final LevelConfig levelConfig = _levelConfigs[currentLevel];
+
+      // final LevelConfig levelConfig = await LevelConfig.load('assets/levels/$currentLevel.json');
       level = await _levelFactory.build(levelConfig);
     } catch (ex) {
       level = demoLevel;
@@ -84,9 +93,9 @@ class ASDGame extends FlameGame
 
     _levelPainter.paintLevel(level);
 
-    _player = Player(
-      position: Vector2(128, 128),
-    );
+    _player = (level.playerMovementType == PlayerMovementType.walking)
+        ? WalkingPlayer(position: Vector2(128, 128))
+        : FlyingPlayer(position: Vector2(128, 128));
     _cameraTarget = CameraTarget(player: _player);
 
     world.add(_player);
@@ -100,11 +109,11 @@ class ASDGame extends FlameGame
 
   void changeLevel() async {
     //
-    if (currentLevel == Levels.ENTRY) {
-      GoRouter.of(buildContext!)
-          .pushReplacement('/game_page/${Levels.TOWER}');
+    if (currentLevel + 1 < _levelConfigs.length) {
+      currentLevel++;
+      GoRouter.of(buildContext!).replace('/game_page/$currentLevel');
     } else {
-      print('The end');
+      GoRouter.of(buildContext!).replace('/');
     }
   }
 }
@@ -119,8 +128,7 @@ class CameraTarget extends PositionComponent with HasGameRef<ASDGame> {
 
   @override
   void update(double dt) {
-    position = player.position +
-        Vector2(100 * (player.velocity.x / player.maxXSpeed), 0);
+    position = player.position + Vector2(100 * (player.velocity.x / player.maxXSpeed), 0);
     position = Vector2(position.x, position.y.clamp(-double.infinity, 400));
     super.update(dt);
   }

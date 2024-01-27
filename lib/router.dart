@@ -23,7 +23,7 @@ final router = GoRouter(
         GoRoute(
             path: 'game_page/:level',
             builder: (context, state) => GamePage(
-                  level: state.pathParameters['level']!,
+                  level: int.parse(state.pathParameters['level']!),
                   key: const Key('game_page'),
                 )),
         GoRoute(

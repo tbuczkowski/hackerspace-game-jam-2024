@@ -56,7 +56,11 @@ class LevelFactory {
       playerPosition = Vector2(1, 1);
     }
 
-    return Level(blocks: blocks, startingPosition: playerPosition);
+    return Level(
+      blocks: blocks,
+      startingPosition: playerPosition,
+      playerMovementType: config.playerMovementType,
+    );
   }
 
   Color _getPixelColor(img.Pixel p) =>
@@ -77,6 +81,11 @@ class LevelFactory {
 class Level {
   final List<Block> blocks;
   final Vector2 startingPosition;
+  final PlayerMovementType playerMovementType;
 
-  Level({required this.blocks, required this.startingPosition});
+  Level({
+    required this.blocks,
+    required this.startingPosition,
+    required this.playerMovementType,
+  });
 }

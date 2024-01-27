@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'game.dart';
 
 class GamePage extends StatefulWidget {
-  final String level;
+  final int level;
   const GamePage({super.key, required this.level});
 
   @override

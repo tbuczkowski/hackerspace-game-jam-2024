@@ -1,5 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:hackerspace_game_jam_2024/game/enemies.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
@@ -16,10 +17,15 @@ class Block {
   // 10,10 is the upper right corner.
   final Vector2 gridPosition;
   final Type blockType;
+
   Block(this.gridPosition, this.blockType);
 }
 
-Level demoLevel = Level(blocks: _segment0, startingPosition: Vector2.zero());
+Level demoLevel = Level(
+  blocks: _segment0,
+  startingPosition: Vector2.zero(),
+  playerMovementType: PlayerMovementType.walking,
+);
 
 final segments = [
   _segment0,
