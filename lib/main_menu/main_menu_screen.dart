@@ -8,7 +8,6 @@ import 'package:hackerspace_game_jam_2024/game/game_state.dart';
 import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
-import '../settings/settings.dart';
 import '../style/my_button.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
@@ -26,7 +25,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      // context.read<AudioController>().playSfx(SfxType.bonk);
+      context.read<AudioController>().musicPlayer.stop();
     });
     super.initState();
   }
@@ -34,8 +33,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
-    final settingsController = context.watch<SettingsController>();
-    final audioController = context.watch<AudioController>();
 
     return Scaffold(
       backgroundColor: palette.backgroundMain,
