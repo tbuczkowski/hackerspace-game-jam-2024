@@ -30,15 +30,13 @@ class LevelPainter {
     KozakEnemy: (gameRef, block) => gameRef.world.add(KozakEnemy(
           gridPosition: block.gridPosition,
         )),
-    Hobo: (gameRef, block) => gameRef.world.add(Hobo(
-          gridPosition: block.gridPosition, speechText: (block.extras as SpeechDef?)?.text
-        )),
-    WallBlock: (gameRef, block) => gameRef.world.add(WallBlock(
-          gridPosition: block.gridPosition
-        )),
-    Gate: (gameRef, block) => gameRef.world.add(Gate(
-          gridPosition: block.gridPosition,
-        ))
+    Hobo: (gameRef, block) =>
+        gameRef.world.add(Hobo(gridPosition: block.gridPosition, speechText: (block.extras as SpeechDef?)?.text)),
+    WallBlock: (gameRef, block) => gameRef.world.add(WallBlock(gridPosition: block.gridPosition)),
+    FrogshopGate: (gameRef, block) {
+      // gameRef.world.add(FrogshopGate(gridPosition: block.gridPosition));
+      gameRef.world.add(FrogshopBackground(gridPosition: block.gridPosition));
+    },
   };
 
   final ASDGame gameRef;

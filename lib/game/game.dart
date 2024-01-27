@@ -70,6 +70,7 @@ class ASDGame extends FlameGame
       'static_money.png',
       'wall.png',
       'gate.png',
+      'frogshop.png',
       'hobo.png',
       'character/run.png',
       'character/idle.png',

@@ -141,7 +141,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
   }
 
   bool leaveLevel(PositionComponent other) {
-    if (other is Gate) {
+    if (other is FrogshopGate || other is FrogshopBackground) {
       game.changeLevel();
       return true;
     }
