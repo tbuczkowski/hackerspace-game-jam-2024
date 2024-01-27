@@ -62,8 +62,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
 
   void initializeGame() async {
     try {
-      level = await _levelFactory.build(
-          LevelConfig(filename: 'assets/levels/level.bmp'));
+      final LevelConfig levelConfig = await LevelConfig.load('assets/levels/level.json');
+      level = await _levelFactory.build(levelConfig);
     } catch(ex) {
       level = demoLevel;
       print(ex);

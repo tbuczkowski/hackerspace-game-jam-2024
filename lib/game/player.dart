@@ -4,6 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/services.dart';
+import 'package:gamepads/gamepads.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
@@ -37,6 +38,14 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
     );
     add(CircleHitbox());
     add(cameraFocusComponent);
+
+    Gamepads.events.listen((GamepadEvent event) {
+      print("gamepadId" + event.gamepadId);
+      print("timestamp" + event.timestamp.toString());
+      print("type   " + event.type.toString());
+      print("key   " + event.key.toString());
+      print("value   " + event.value.toString());
+    });
   }
 
   @override
