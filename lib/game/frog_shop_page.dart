@@ -29,10 +29,6 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
     });
   }
 
-  void enableShop() {
-    //todo frogg shop UI visible, enable purchases
-  }
-
   void toNextStage() {
     gameRef.overlays.remove('frog_shop');
     GoRouter.of(context!).replace('/game_page');
@@ -47,6 +43,48 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
 
         ),
         speed: const Duration(milliseconds: 50));
+  }
+
+  Container ProductToBuy(String spritePath) {
+    return Label(Image(
+      image: AssetImage(spritePath),
+    ));
+  }
+
+  Container PriceLabel(int price){
+    return Label(Text("$price \$"));
+  }
+
+  Container Label(Widget content){
+    return Container(
+      margin: EdgeInsets.all(15),
+      padding: EdgeInsets.all(15),
+      child: Container(
+        color: Colors.green,
+        width: 100,
+        height: 100,
+        child: SizedBox(
+          width: 50,
+          height: 50,
+          child: content,
+        ),
+      ),
+    );
+  }
+
+  Widget HpLabel() {
+    var hp = gameRef.health;
+    return Label(Text("HP: $hp"));
+  }
+
+  Widget MoneyLabel() {
+    var score = gameRef.currentScore;
+    return Label(Text("HP: $score"));
+  }
+
+  Widget PointLabel() {
+    var currentFrogPoints = gameRef.currentFrogPoints;
+    return Label(Text("HP: $currentFrogPoints"));
   }
 
   @override
@@ -64,40 +102,62 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
             alignment: Alignment.bottomCenter,
             child: MyButton(child: Text("Continue Journey"), onPressed: () => toNextStage())
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.zero,
-              padding: EdgeInsets.zero,
-              alignment: Alignment.topLeft,
-              child: Image(
-                width: 200,
-                height: 200,
-                image: AssetImage('assets/images/frogg_merchant.gif'),
+        Column(children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
+                alignment: Alignment.topLeft,
+                child: Image(
+                  width: 200,
+                  height: 200,
+                  image: AssetImage('assets/images/frogg_merchant.gif'),
+                ),
               ),
-            ),
-            Container(
-              alignment: Alignment.topCenter,
-              color: Colors.blueGrey,
-              height: 200,
-              width: 500,
-              child: AnimatedTextKit(
-                repeatForever: false,
-                totalRepeatCount: 1,
-                onFinished: () => enableShop(),
-                pause: Duration(seconds: 2),
-                animatedTexts: [
-                  TypedAnimation(""),
-                  TypedAnimation("I am sorry, we are out of hotdogs, Wariacie"),
-                  TypedAnimation("Try in the next Frogg Shop. It shouldn't be far."),
-                  TypedAnimation("Best of luck, traveler. Maybe a Monster Energy Drincc?"),
-                  TypedAnimation("")
-                ],
-            ))
-          ],
-        )
+              Container(
+                  alignment: Alignment.topCenter,
+                  color: Colors.blueGrey,
+                  height: 200,
+                  width: 500,
+                  child: AnimatedTextKit(
+                    repeatForever: false,
+                    totalRepeatCount: 1,
+                    pause: Duration(seconds: 2),
+                    animatedTexts: [
+                      TypedAnimation(""),
+                      TypedAnimation("I am sorry, we are out of hotdogs, Wariacie"),
+                      TypedAnimation("Try in the next Frogg Shop. It shouldn't be far."),
+                      TypedAnimation("Best of luck, traveler. Maybe a Monster Energy Drincc?"),
+                      TypedAnimation("")
+                    ],
+                  ))
+            ],
+          ),
+          Row(
+            children: [
+              HpLabel(),
+              MoneyLabel(),
+              PointLabel()
+            ],
+          ),
+          Row(
+            children: [
+              ProductToBuy("assets/images/shop/monsterek.png"),
+              ProductToBuy("assets/images/shop/specek.png"),
+              ProductToBuy("assets/images/shop/szlugi.png"),
+            ],
+          ),
+          Row(
+            children: [
+              PriceLabel(2),
+              PriceLabel(4),
+              PriceLabel(7)
+            ],
+          )
+        ],)
       ],
     );
   }
