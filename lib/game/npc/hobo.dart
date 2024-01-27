@@ -35,16 +35,16 @@ class Hobo extends SpriteAnimationComponent with CollisionCallbacks, HasGameRefe
       game.size.y - (gridPosition.y * size.y),
     );
     add(RectangleHitbox(collisionType: CollisionType.passive));
-    add(
-      MoveEffect.by(
-        Vector2(-2 * size.x, 0),
-        EffectController(
-          duration: 3,
-          alternate: true,
-          infinite: true,
-        ),
-      ),
-    );
+    // add(
+    //   MoveEffect.by(
+    //     Vector2(-2 * size.x, 0),
+    //     EffectController(
+    //       duration: 3,
+    //       alternate: true,
+    //       infinite: true,
+    //     ),
+    //   ),
+    // );
   }
 
   @override
