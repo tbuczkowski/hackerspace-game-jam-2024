@@ -90,7 +90,10 @@ class AudioController {
         completer.complete();
       }
     });
-    currentPlayer.play(AssetSource('sfx/$filename'), volume: soundTypeToVolume(type));
+    currentPlayer.play(
+      AssetSource('sfx/$filename'),
+      volume: soundTypeToVolume(type),
+    );
     return completer.future;
   }
 

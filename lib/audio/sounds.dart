@@ -45,7 +45,7 @@ List<String> soundTypeToFilename(SfxType type) {
       ];
     case SfxType.youDied:
       return const [
-        'you_died.mp3',
+        'youdied.m4a',
       ];
   }
 }
