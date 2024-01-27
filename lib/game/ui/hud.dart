@@ -19,7 +19,7 @@ class Hud extends PositionComponent with HasGameReference<ASDGame> {
   @override
   Future<void> onLoad() async {
     _scoreTextComponent = TextComponent(
-      text: '${game.starsCollected}',
+      text: '${game.currentScore}',
       textRenderer: TextPaint(
         style: const TextStyle(
           fontSize: 32,
@@ -55,6 +55,6 @@ class Hud extends PositionComponent with HasGameReference<ASDGame> {
 
   @override
   void update(double dt) {
-    _scoreTextComponent.text = '${game.starsCollected}';
+    _scoreTextComponent.text = '${game.currentScore}';
   }
 }

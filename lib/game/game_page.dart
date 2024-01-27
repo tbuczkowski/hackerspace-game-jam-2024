@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'game.dart';
 
 class GamePage extends StatefulWidget {
-  final int level;
-  const GamePage({super.key, required this.level});
+  const GamePage({super.key});
 
   @override
   State<GamePage> createState() => _GamePageState();
@@ -16,7 +15,7 @@ class _GamePageState extends State<GamePage> {
   Widget build(BuildContext context) {
     return Focus(
       onKey: (focus, onKey) => KeyEventResult.handled,
-      child: GameWidget(game: ASDGame(widget.level)),
+      child: GameWidget(game: ASDGame()),
     );
   }
 }

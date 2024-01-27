@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hackerspace_game_jam_2024/game/game_state.dart';
 import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
@@ -45,8 +46,9 @@ class MainMenuScreen extends StatelessWidget {
           children: [
             MyButton(
               onPressed: () {
+                GameState.reset();
                 audioController.playSfx(SfxType.buttonTap);
-                GoRouter.of(context).go('/game_page/0');
+                GoRouter.of(context).go('/game_page');
               },
               child: const Text('Play'),
             ),
