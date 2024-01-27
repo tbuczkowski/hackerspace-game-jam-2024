@@ -34,12 +34,11 @@ class Hud extends PositionComponent with HasGameReference<ASDGame> {
     final moneySprite = await game.loadSprite('static_money.png');
     add(
       SpriteComponent(
-        sprite: moneySprite,
-        position: Vector2(game.size.x - 100, 20),
-        size: Vector2.all(24),
-        anchor: Anchor.center,
-        scale: Vector2(1.5, 1.5)
-      ),
+          sprite: moneySprite,
+          position: Vector2(game.size.x - 100, 20),
+          size: Vector2.all(24),
+          anchor: Anchor.center,
+          scale: Vector2(1.5, 1.5)),
     );
 
     for (var i = 1; i <= game.health; i++) {
@@ -47,8 +46,8 @@ class Hud extends PositionComponent with HasGameReference<ASDGame> {
       await add(
         HeartHealthComponent(
           heartNumber: i,
-          position: Vector2(positionX.toDouble(), 20),
-          size: Vector2.all(32),
+          position: Vector2(positionX.toDouble(), 32),
+          size: Vector2.all(32 * 3.5),
         ),
       );
     }
