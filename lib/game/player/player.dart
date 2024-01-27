@@ -18,22 +18,51 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
   int horizontalDirection = 0;
   bool hitByEnemy = false;
 
+  late final SpriteAnimation _runAnimation;
+  late final SpriteAnimation _idleAnimation;
+  late final SpriteAnimation _jumpAnimation;
+  late final SpriteAnimation _flinchAnimation;
+
   Player({
     required super.position,
   }) : super(size: Vector2.all(64), anchor: Anchor.center);
 
   @override
-  void onLoad() {
-    animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('ember.png'),
+  void update(double dt) {
+    super.update(dt);
+    animation = updateAnimation();
+  }
+
+  SpriteAnimation updateAnimation() {
+    const int movementThreshold = 50;
+    if(hitByEnemy) return _flinchAnimation;
+    if(velocity.y.abs() > movementThreshold) return _jumpAnimation;
+    if(velocity.x.abs() > movementThreshold) return _runAnimation;
+    return _idleAnimation;
+  }
+
+  @override
+  Future<void> onLoad() async {
+    _runAnimation = loadAnimation('character/run.png', 6);
+    _idleAnimation = loadAnimation('character/idle.png', 4, positionOffset: Vector2(-5, 0));
+    _flinchAnimation = loadAnimation('character/hurt.png', 2);
+    _jumpAnimation = loadAnimation('character/jump.png', 4);
+    animation = _idleAnimation;
+
+    add(CircleHitbox(radius: 48 / 2, position: Vector2(0, 16)));
+    add(cameraFocusComponent);
+  }
+
+  SpriteAnimation loadAnimation(String path, int numberOfFrames, {Vector2? positionOffset}) {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache(path),
       SpriteAnimationData.sequenced(
-        amount: 4,
-        textureSize: Vector2.all(16),
+        amount: numberOfFrames,
+        textureSize: Vector2.all(48),
         stepTime: 0.12,
+        texturePosition: positionOffset,
       ),
     );
-    add(CircleHitbox(radius: 48 / 2, position: Vector2(8, 16)));
-    add(cameraFocusComponent);
   }
 
   @override
