@@ -17,7 +17,6 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
-    print('asdgame');
     return Focus(
       onKey: (focus, onKey) => KeyEventResult.handled,
       child: GameWidget(

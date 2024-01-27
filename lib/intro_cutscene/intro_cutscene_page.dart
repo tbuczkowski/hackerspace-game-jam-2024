@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hackerspace_game_jam_2024/audio/audio_controller.dart';
 import 'package:hackerspace_game_jam_2024/style/my_button.dart';
+import 'package:provider/provider.dart';
 
 class IntroCutscenePage extends StatefulWidget {
   const IntroCutscenePage({super.key});
@@ -25,16 +28,22 @@ class _IntroCutscenePageState extends State<IntroCutscenePage> {
 
   @override
   void initState() {
-    timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      if (currentScene < scenes.length - 1) {
-        setState(() {
-          currentScene++;
+    final song = AssetSource('music/intro.mp3');
+    context.read<AudioController>().musicPlayer.play(song).then((_) {
+      context.read<AudioController>().musicPlayer.getDuration().then((value) {
+        timer = Timer.periodic(Duration(milliseconds: (value!.inMilliseconds / scenes.length).round()), (timer) {
+          if (currentScene < scenes.length - 1) {
+            setState(() {
+              currentScene++;
+            });
+          } else {
+            timer.cancel();
+            GoRouter.of(context).go('/game_page');
+          }
         });
-      } else {
-        timer.cancel();
-        GoRouter.of(context).go('/game_page');
-      }
+      });
     });
+
     super.initState();
   }
 

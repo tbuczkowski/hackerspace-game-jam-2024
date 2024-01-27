@@ -1,8 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/levels.dart';
 
 class GameState {
-
   static GameState? _instance;
 
   static Future<GameState> getInstance() async {
@@ -22,6 +22,11 @@ class GameState {
   int _totalScore = 0;
 
   final List<LevelConfig> _levels = [];
+
+  final List songs = [
+    AssetSource('music/level1.mp3'),
+    AssetSource('music/scooter_level.mp3'),
+  ];
 
   Future<void> initialize() async {
     _levels.addAll(await loadLevels());
