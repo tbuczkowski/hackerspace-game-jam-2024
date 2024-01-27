@@ -31,13 +31,14 @@ class Hud extends PositionComponent with HasGameReference<ASDGame> {
     );
     add(_scoreTextComponent);
 
-    final starSprite = await game.loadSprite('star.png');
+    final moneySprite = await game.loadSprite('static_money.png');
     add(
       SpriteComponent(
-        sprite: starSprite,
+        sprite: moneySprite,
         position: Vector2(game.size.x - 100, 20),
-        size: Vector2.all(32),
+        size: Vector2.all(24),
         anchor: Anchor.center,
+        scale: Vector2(1.5, 1.5)
       ),
     );
 

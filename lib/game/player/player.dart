@@ -5,7 +5,7 @@ import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
-import 'package:hackerspace_game_jam_2024/game/ui/star.dart';
+import 'package:hackerspace_game_jam_2024/game/ui/money.dart';
 
 class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 velocity = Vector2.zero();
@@ -81,7 +81,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
       hit();
     }
 
-    if (other is Star) {
+    if (other is Money) {
       other.removeFromParent();
       game.currentScore++;
     }

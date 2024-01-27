@@ -4,7 +4,7 @@ import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
-import 'package:hackerspace_game_jam_2024/game/ui/star.dart';
+import 'package:hackerspace_game_jam_2024/game/ui/money.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
 
 bool isTerrain(Component component) {
@@ -76,7 +76,7 @@ final _segment0 = [
   Block(Vector2(25, 3), PlatformBlock),
   Block(Vector2(26, 0), GroundBlock),
   Block(Vector2(26, 3), PlatformBlock),
-  Block(Vector2(26, 4), Star),
+  Block(Vector2(26, 4), Money),
   Block(Vector2(27, 0), GroundBlock),
   Block(Vector2(27, 3), PlatformBlock),
   Block(Vector2(28, 0), GroundBlock),
@@ -94,7 +94,7 @@ final _segment1 = [
   Block(Vector2(3, 6), PlatformBlock),
   Block(Vector2(6, 5), PlatformBlock),
   Block(Vector2(7, 5), PlatformBlock),
-  Block(Vector2(7, 7), Star),
+  Block(Vector2(7, 7), Money),
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(8, 1), PlatformBlock),
   Block(Vector2(8, 5), PlatformBlock),
@@ -117,7 +117,7 @@ final _segment2 = [
   Block(Vector2(6, 3), PlatformBlock),
   Block(Vector2(6, 4), PlatformBlock),
   Block(Vector2(6, 5), PlatformBlock),
-  Block(Vector2(6, 7), Star),
+  Block(Vector2(6, 7), Money),
   Block(Vector2(7, 0), GroundBlock),
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(9, 0), GroundBlock),
@@ -135,7 +135,7 @@ final _segment3 = [
   Block(Vector2(7, 0), GroundBlock),
   Block(Vector2(7, 1), PlatformBlock),
   Block(Vector2(8, 0), GroundBlock),
-  Block(Vector2(8, 8), Star),
+  Block(Vector2(8, 8), Money),
   Block(Vector2(9, 0), GroundBlock),
 ];
 
@@ -152,7 +152,7 @@ final _segment4 = [
   Block(Vector2(5, 5), PlatformBlock),
   Block(Vector2(6, 0), GroundBlock),
   Block(Vector2(6, 5), PlatformBlock),
-  Block(Vector2(6, 7), Star),
+  Block(Vector2(6, 7), Money),
   Block(Vector2(7, 0), GroundBlock),
   Block(Vector2(8, 0), GroundBlock),
   Block(Vector2(8, 3), PlatformBlock),

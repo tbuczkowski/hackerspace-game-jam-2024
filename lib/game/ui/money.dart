@@ -4,19 +4,25 @@ import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 
-class Star extends SpriteComponent with HasGameReference<ASDGame> {
+class Money extends SpriteAnimationComponent with HasGameReference<ASDGame> {
   final Vector2 gridPosition;
 
   final Vector2 velocity = Vector2.zero();
 
-  Star({
+  Money({
     required this.gridPosition,
   }) : super(size: Vector2.all(64), anchor: Anchor.center);
 
   @override
   void onLoad() {
-    final starImage = game.images.fromCache('star.png');
-    sprite = Sprite(starImage);
+    animation = SpriteAnimation.fromFrameData(
+      game.images.fromCache('Money.png'),
+      SpriteAnimationData.sequenced(
+          amount: 6,
+          textureSize: Vector2.all(24),
+          stepTime: 0.50,
+      ),
+    );
     position = Vector2(
       (gridPosition.x * size.x) + (size.x / 2),
       game.size.y - (gridPosition.y * size.y) - (size.y / 2),
