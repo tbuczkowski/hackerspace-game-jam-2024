@@ -25,7 +25,15 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   late Level level;
   late LevelPainter _levelPainter;
   int currentScore = 0;
-  int health = 3;
+  int _health = 1;
+
+  int get health => _health;
+  set health(int value) {
+    _health = value;
+    if (_health == 0) {
+      launchGameOver();
+    }
+  }
 
   final LevelFactory _levelFactory = LevelFactory(LevelFactoryConfig.build());
 
@@ -98,6 +106,11 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       _gameState.nextLevel(currentScore);
       GoRouter.of(buildContext!).replace('/game_page');
     }
+  }
+
+  void launchGameOver() {
+    _player.lockControls = true;
+    overlays.add('you_died');
   }
 }
 

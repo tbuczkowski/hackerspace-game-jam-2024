@@ -18,15 +18,21 @@ class WalkingPlayer extends Player {
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horizontalDirection = 0;
-    horizontalDirection +=
-        (keysPressed.contains(LogicalKeyboardKey.keyA) || keysPressed.contains(LogicalKeyboardKey.arrowLeft)) ? -1 : 0;
-    horizontalDirection +=
-        (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) ? 1 : 0;
-    final bool wasJumpPressed = jumpIsPressed;
-    jumpIsPressed = keysPressed.contains(LogicalKeyboardKey.space);
-    if (!wasJumpPressed && jumpTime == null && isOnGround) {
-      jumpTime = jumpIsPressed ? 0 : null;
-      jump(jumpHeight);
+    if (!lockControls) {
+      horizontalDirection +=
+          (keysPressed.contains(LogicalKeyboardKey.keyA) || keysPressed.contains(LogicalKeyboardKey.arrowLeft))
+              ? -1
+              : 0;
+      horizontalDirection +=
+          (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight))
+              ? 1
+              : 0;
+      final bool wasJumpPressed = jumpIsPressed;
+      jumpIsPressed = keysPressed.contains(LogicalKeyboardKey.space);
+      if (!wasJumpPressed && jumpTime == null && isOnGround) {
+        jumpTime = jumpIsPressed ? 0 : null;
+        jump(jumpHeight);
+      }
     }
     return true;
   }

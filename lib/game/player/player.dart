@@ -11,6 +11,8 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
   final Vector2 velocity = Vector2.zero();
   final double maxXSpeed = 500;
 
+  bool lockControls = false;
+
   final PositionComponent cameraFocusComponent = PositionComponent(position: Vector2(0, 1));
 
   double? jumpTime;

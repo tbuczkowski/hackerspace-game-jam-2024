@@ -48,9 +48,8 @@ class AudioController {
   AudioController({int polyphony = 2})
       : assert(polyphony >= 1),
         _musicPlayer = AudioPlayer(playerId: 'musicPlayer'),
-        _sfxPlayers = Iterable.generate(
-                polyphony, (i) => AudioPlayer(playerId: 'sfxPlayer#$i'))
-            .toList(growable: false),
+        _sfxPlayers =
+            Iterable.generate(polyphony, (i) => AudioPlayer(playerId: 'sfxPlayer#$i')).toList(growable: false),
         _playlist = Queue.of(List<Song>.of(songs)..shuffle()) {
     _musicPlayer.onPlayerComplete.listen(_handleSongFinished);
     unawaited(_preloadSfx());
@@ -59,8 +58,7 @@ class AudioController {
   /// Makes sure the audio controller is listening to changes
   /// of both the app lifecycle (e.g. suspended app) and to changes
   /// of settings (e.g. muted sound).
-  void attachDependencies(AppLifecycleStateNotifier lifecycleNotifier,
-      SettingsController settingsController) {
+  void attachDependencies(AppLifecycleStateNotifier lifecycleNotifier, SettingsController settingsController) {
     _attachLifecycleNotifier(lifecycleNotifier);
     _attachSettings(settingsController);
   }
@@ -79,7 +77,7 @@ class AudioController {
   /// The controller will ignore this call when the attached settings'
   /// [SettingsController.audioOn] is `true` or if its
   /// [SettingsController.soundsOn] is `false`.
-  void playSfx(SfxType type) {
+  Future<void> playSfx(SfxType type) async {
     final audioOn = _settings?.audioOn.value ?? false;
     if (!audioOn) {
       _log.fine(() => 'Ignoring playing sound ($type) because audio is muted.');
@@ -87,8 +85,7 @@ class AudioController {
     }
     final soundsOn = _settings?.soundsOn.value ?? false;
     if (!soundsOn) {
-      _log.fine(() =>
-          'Ignoring playing sound ($type) because sounds are turned off.');
+      _log.fine(() => 'Ignoring playing sound ($type) because sounds are turned off.');
       return;
     }
 
@@ -98,9 +95,15 @@ class AudioController {
     _log.fine(() => '- Chosen filename: $filename');
 
     final currentPlayer = _sfxPlayers[_currentSfxPlayer];
-    currentPlayer.play(AssetSource('sfx/$filename'),
-        volume: soundTypeToVolume(type));
     _currentSfxPlayer = (_currentSfxPlayer + 1) % _sfxPlayers.length;
+    final Completer completer = Completer();
+    currentPlayer.onPlayerStateChanged.listen((event) {
+      if (event == PlayerState.completed) {
+        completer.complete();
+      }
+    });
+    currentPlayer.play(AssetSource('sfx/$filename'), volume: soundTypeToVolume(type));
+    return completer.future;
   }
 
   /// Enables the [AudioController] to listen to [AppLifecycleState] events,
@@ -199,7 +202,7 @@ class AudioController {
   Future<void> _playCurrentSongInPlaylist() async {
     _log.info(() => 'Playing ${_playlist.first} now.');
     try {
-      await _musicPlayer.play(AssetSource('music/${_playlist.first.filename}'));
+      // await _musicPlayer.play(AssetSource('music/${_playlist.first.filename}'));
     } catch (e) {
       _log.severe('Could not play song ${_playlist.first}', e);
     }
@@ -227,10 +230,7 @@ class AudioController {
     // This assumes there is only a limited number of sound effects in the game.
     // If there are hundreds of long sound effect files, it's better
     // to be more selective when preloading.
-    await AudioCache.instance.loadAll(SfxType.values
-        .expand(soundTypeToFilename)
-        .map((path) => 'sfx/$path')
-        .toList());
+    await AudioCache.instance.loadAll(SfxType.values.expand(soundTypeToFilename).map((path) => 'sfx/$path').toList());
   }
 
   void _soundsOnHandler() {
