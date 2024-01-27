@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
+import '../game/level/levels.dart';
 import '../settings/settings.dart';
 import '../style/my_button.dart';
 import '../style/palette.dart';
@@ -45,7 +46,7 @@ class MainMenuScreen extends StatelessWidget {
             MyButton(
               onPressed: () {
                 audioController.playSfx(SfxType.buttonTap);
-                GoRouter.of(context).go('/game_page');
+                GoRouter.of(context).go('/game_page/${Levels.ENTRY}');
               },
               child: const Text('Play'),
             ),
