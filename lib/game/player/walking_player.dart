@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 
@@ -39,6 +40,7 @@ class WalkingPlayer extends Player {
 
   void jump(double jumpHeight) {
     if (jumpTime != null) {
+      game.audioController.playSfx(SfxType.jump);
       final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 350);
       velocity.y = (-2 * jumpHeight * horizontalComponent) / (jumpDistance);
       isOnGround = false;

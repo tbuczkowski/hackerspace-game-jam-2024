@@ -124,6 +124,9 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     // If collision normal is almost upwards,
     // ember must be on ground.
     if (Vector2(0, -1).dot(collisionNormal) > 0.9) {
+      if (!isOnGround) {
+        game.audioController.playSfx(SfxType.step);
+      }
       isOnGround = true;
       jumpTime = null;
       velocity.y = 0;

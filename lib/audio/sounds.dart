@@ -76,6 +76,17 @@ List<String> soundTypeToFilename(SfxType type) {
         'metal_steps_09.wav',
         'metal_steps_10.wav',
       ];
+    case SfxType.jump:
+      return const [
+        'slightscream-08.flac',
+        'slightscream-09.flac',
+        'slightscream-10.flac',
+        'slightscream-11.flac',
+        'slightscream-12.flac',
+        'slightscream-13.flac',
+        'slightscream-14.flac',
+        'slightscream-15.flac',
+      ];
   }
 }
 
@@ -95,6 +106,8 @@ double soundTypeToVolume(SfxType type) {
     case SfxType.pain:
     case SfxType.swishSwish:
       return 1.0;
+    case SfxType.jump:
+      return 0.7;
     case SfxType.youDied:
       return 1.5;
   }
@@ -111,4 +124,5 @@ enum SfxType {
   bonk,
   pain,
   step,
+  jump,
 }
