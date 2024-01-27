@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
+import 'package:flame/geometry.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/audio/audio_controller.dart';
@@ -14,12 +15,15 @@ import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/scooter_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/hud.dart';
 
 import 'background_component.dart';
 
-class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
+class ASDGame extends FlameGame
+    with HasCollisionDetection, HasKeyboardHandlerComponents {
   final AudioController audioController;
   late final Player _player;
   late final CameraTarget _cameraTarget;
@@ -35,6 +39,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   int _health = 5;
 
   int get health => _health;
+
   set health(int value) {
     _health = value;
     if (_health == 0) {
@@ -137,10 +142,31 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     _player.lockControls = true;
     _player.removeWhere((c) => c is ShapeHitbox);
     _player.jumpTime = 0;
-    (_player as WalkingPlayer).jump(WalkingPlayer.jumpHeight * 0.5);
+    if (_player is WalkingPlayer) {
+      (_player as WalkingPlayer).jump(WalkingPlayer.jumpHeight * 0.5);
+    }
     Future.delayed(Duration(milliseconds: 750)).then((_) {
       overlays.add('you_died');
     });
+  }
+
+  @override
+  void update(double dt) {
+    if (_player is ScooterPlayer) {
+      handleScooterCollision();
+    }
+    super.update(dt);
+  }
+
+  void handleScooterCollision() {
+    final ray =
+        Ray2(origin: _player.position, direction: Vector2(1, 0)..normalize());
+    final result = collisionDetection.raycast(ray, maxDistance: 32);
+    if (result != null && result.hitbox?.parent is BaseTerrain) {
+      _player.velocity.x = 0;
+      _player.position -= Vector2(100, 0);
+      _player.hit();
+    }
   }
 }
 
@@ -154,7 +180,8 @@ class CameraTarget extends PositionComponent with HasGameRef<ASDGame> {
 
   @override
   void update(double dt) {
-    position = player.position + Vector2(100 * (player.velocity.x / player.maxXSpeed), 0);
+    position = player.position +
+        Vector2(100 * (player.velocity.x / player.maxXSpeed), 0);
     position = Vector2(position.x, position.y.clamp(-double.infinity, 400));
     super.update(dt);
   }

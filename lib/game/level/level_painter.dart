@@ -4,7 +4,7 @@ import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/hobo.dart';
-import 'package:hackerspace_game_jam_2024/game/player/flying_player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/scooter_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
@@ -57,7 +57,7 @@ class LevelPainter {
 
     Player player = (level.playerMovementType == PlayerMovementType.walking)
         ? WalkingPlayer(position: position)
-        : FlyingPlayer(position: position);
+        : ScooterPlayer(position: position);
 
     gameRef.world.add(player);
 
