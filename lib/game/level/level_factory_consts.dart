@@ -12,7 +12,7 @@ import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 final Map<Color, Type> colorToBlockType = {
   Color(0x01FF0000): PlatformBlock,
   Color(0x0100FF00): GroundBlock,
-  Color(0x010000FF): WaterEnemy,
+  Color(0x010000FF): KozakEnemy,
   Color(0x01FFFF00): Star,
   Color(0x01FF00FF): WallBlock,
   Color(0x01c08040): Gate,

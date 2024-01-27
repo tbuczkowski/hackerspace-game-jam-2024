@@ -43,6 +43,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/character/
+    - assets/images/enemy/
     - assets/images/background/
     - assets/music/
     - assets/sfx/

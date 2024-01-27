@@ -47,7 +47,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
   Future<void> onLoad() async {
     _runAnimation = loadAnimation('character/run.png', 6);
     _idleAnimation = loadAnimation('character/idle.png', 4, positionOffset: Vector2(-5, 0));
-    _flinchAnimation = loadAnimation('character/hurt.png', 2);
+    _flinchAnimation = loadAnimation('character/hurt.png', 2, positionOffset: Vector2(-5, 0));
     _jumpAnimation = loadAnimation('character/jump.png', 4);
     animation = _idleAnimation;
 
@@ -122,7 +122,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
     return false;
   }
 
-  bool shouldReceiveHit(PositionComponent other) => other is WaterEnemy;
+  bool shouldReceiveHit(PositionComponent other) => other is KozakEnemy;
 
   // This method runs an opacity effect on ember to make it blink.
   void hit() {

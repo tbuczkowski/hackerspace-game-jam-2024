@@ -25,7 +25,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   late Level level;
   late LevelPainter _levelPainter;
   int currentScore = 0;
-  int _health = 1;
+  int _health = 3;
 
   int get health => _health;
   set health(int value) {
@@ -64,7 +64,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       'character/hurt.png',
       'character/jump.png',
       'specek.png',
-      'zbita_butelka.png'
+      'zbita_butelka.png',
+      'enemy/Walk.png'
     ]);
 
     await initializeGame();

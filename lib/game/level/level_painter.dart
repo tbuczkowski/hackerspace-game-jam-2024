@@ -27,7 +27,7 @@ class LevelPainter {
     Star: (gameRef, block) => gameRef.world.add(Star(
           gridPosition: block.gridPosition,
         )),
-    WaterEnemy: (gameRef, block) => gameRef.world.add(WaterEnemy(
+    KozakEnemy: (gameRef, block) => gameRef.world.add(KozakEnemy(
           gridPosition: block.gridPosition,
         )),
     Hobo: (gameRef, block) => gameRef.world.add(Hobo(

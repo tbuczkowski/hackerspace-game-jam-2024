@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 
-class WaterEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>, CollisionCallbacks {
+class KozakEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>, CollisionCallbacks {
   final Vector2 gridPosition;
 
   Vector2 velocity = Vector2.zero();
@@ -15,18 +15,19 @@ class WaterEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>
 
   int horizontalDirection = -1;
 
-  WaterEnemy({
+  KozakEnemy({
     required this.gridPosition,
   }) : super(size: Vector2.all(64), anchor: Anchor.bottomLeft);
 
   @override
   void onLoad() {
     animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('water_enemy.png'),
+      game.images.fromCache('enemy/Walk.png'),
       SpriteAnimationData.sequenced(
-        amount: 2,
-        textureSize: Vector2.all(16),
+        amount: 6,
+        textureSize: Vector2.all(48),
         stepTime: 0.70,
+        texturePosition: Vector2(-10, 0)
       ),
     );
     position = Vector2(
