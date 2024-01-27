@@ -3,19 +3,14 @@ import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flame/parallax.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
-import 'package:hackerspace_game_jam_2024/game/enemies.dart';
-import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/hud.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
-import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/player.dart';
-import 'package:hackerspace_game_jam_2024/game/star.dart';
 
-import 'BackgroundComponent.dart';
+import 'background_component.dart';
 
 class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
   late final Player _player;
@@ -63,8 +58,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
 
   void initializeGame() async {
     try {
-      level = await _levelFactory.build(
-          LevelConfig(filename: 'assets/levels/level.bmp'));
+      final LevelConfig levelConfig = await LevelConfig.load('assets/levels/tower_level.json');
+      level = await _levelFactory.build(levelConfig);
     } catch(ex) {
       level = demoLevel;
       print(ex);
