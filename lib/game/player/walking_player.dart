@@ -23,15 +23,15 @@ class WalkingPlayer extends Player {
         (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) ? 1 : 0;
     jumpIsPressed = keysPressed.contains(LogicalKeyboardKey.space);
     if (jumpTime == null && isOnGround) {
+      jumpTime = jumpIsPressed ? 0 : null;
       jump(jumpHeight);
     }
     return true;
   }
 
   void jump(double jumpHeight) {
-    jumpTime = jumpIsPressed ? 0 : null;
     if (jumpTime != null) {
-      final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 300);
+      final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 350);
       velocity.y = (-2 * jumpHeight * horizontalComponent) / (jumpDistance);
       isOnGround = false;
     }
@@ -79,7 +79,8 @@ class WalkingPlayer extends Player {
       print(velocity);
       if (Vector2(0, -1).dot(collisionNormal) > 0.8 && velocity.y > 100 && position.y < other.position.y) {
         other.kill();
-        jump(jumpHeight / 3);
+        jumpTime = 0;
+        jump(jumpHeight / 2);
         return;
       }
     }
