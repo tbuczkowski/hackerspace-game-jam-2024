@@ -75,7 +75,7 @@ class WalkingPlayer extends Player {
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is WaterEnemy && !iframesActive && intersectionPoints.length == 2) {
+    if (other is KozakEnemy && !iframesActive && intersectionPoints.length == 2) {
       final Vector2 mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
 
       final collisionNormal = absoluteCenter - mid;

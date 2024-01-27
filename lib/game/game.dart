@@ -59,8 +59,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     await images.loadAll([
       'block.png',
       'ground.png',
-      'star.png',
-      'water_enemy.png',
+      'Money.png',
+      'static_money.png',
       'wall.png',
       'gate.png',
       'hobo.png',
@@ -69,7 +69,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       'character/hurt.png',
       'character/jump.png',
       'specek.png',
-      'zbita_butelka.png'
+      'zbita_butelka.png',
+      'enemy/Walk.png'
     ]);
 
     await initializeGame();

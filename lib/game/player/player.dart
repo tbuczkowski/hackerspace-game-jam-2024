@@ -6,7 +6,7 @@ import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
-import 'package:hackerspace_game_jam_2024/game/ui/star.dart';
+import 'package:hackerspace_game_jam_2024/game/ui/money.dart';
 
 class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 velocity = Vector2.zero();
@@ -57,7 +57,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
   Future<void> onLoad() async {
     _runAnimation = loadAnimation('character/run.png', 6);
     _idleAnimation = loadAnimation('character/idle.png', 4, positionOffset: Vector2(-5, 0));
-    _flinchAnimation = loadAnimation('character/hurt.png', 2);
+    _flinchAnimation = loadAnimation('character/hurt.png', 2, positionOffset: Vector2(-5, 0));
     _jumpAnimation = loadAnimation('character/jump.png', 4);
     spriteAnimationComponent.animation = _idleAnimation;
 
@@ -92,7 +92,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
       hit();
     }
 
-    if (other is Star) {
+    if (other is Money) {
       other.removeFromParent();
       game.currentScore++;
     }
@@ -133,7 +133,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     return false;
   }
 
-  bool shouldReceiveHit(PositionComponent other) => other is WaterEnemy;
+  bool shouldReceiveHit(PositionComponent other) => other is KozakEnemy;
 
   // This method runs an opacity effect on ember to make it blink.
   void hit() {
