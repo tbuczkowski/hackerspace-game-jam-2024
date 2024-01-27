@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/audio/audio_controller.dart';
@@ -20,6 +22,7 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
   final ASDGame gameRef;
   int intermissionStep = 0;
   String dialogText = "";
+  List<int> boughtProducts = [];
 
   _FrogShopPageState(this.gameRef);
 
@@ -40,14 +43,23 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
         textStyle: TextStyle(
           decoration: TextDecoration.none,
           color: Colors.black,
+          fontSize: 35
         ),
         speed: const Duration(milliseconds: 50));
   }
 
-  Container ProductToBuy(String spritePath) {
-    return Label(Image(
-      image: AssetImage(spritePath),
-    ));
+  Container ProductToBuy(String spritePath, Function onBuy, Function affectPlayer) {
+    return Label(
+        InkWell(
+          onTap: () {
+            onBuy();
+            affectPlayer();
+          },
+          child: Image(
+            image: AssetImage(spritePath),
+          ),
+        )
+      );
   }
 
   Widget PriceLabel(int price){
@@ -100,78 +112,112 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
     return TextLabel("Żapp points: $currentFrogPoints");
   }
 
+  int calculateMultiplier() {
+    if(boughtProducts.contains(0)
+        && boughtProducts.contains(1)
+        && boughtProducts.contains(2)) {
+      return 2;
+    }
+    return 1;
+  }
+
+  void BuyProduct(int price, int index) {
+    var saleMultiplies = calculateMultiplier();
+    if(price <= gameRef.currentScore) {
+      gameRef.currentScore -= price;
+      gameRef.currentFrogPoints += price * saleMultiplies;
+      boughtProducts.add(index);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox.expand(
-            child: Image(
-                fit: BoxFit.fill,
-                image: AssetImage('assets/images/frog_shop.png'))
-        ),
-        Container(
-            margin: EdgeInsets.zero,
-            padding: EdgeInsets.zero,
-            alignment: Alignment.bottomCenter,
-            child: MyButton(child: Text("Continue Journey"), onPressed: () => toNextStage())
-        ),
-        Column(children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.zero,
-                padding: EdgeInsets.zero,
-                alignment: Alignment.topLeft,
-                child: Image(
-                  width: 200,
-                  height: 200,
-                  image: AssetImage('assets/images/frogg_merchant.gif'),
+    return Scaffold(
+      body: Stack(
+        children: [
+          SizedBox.expand(
+              child: Image(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/images/frog_shop.png'))
+          ),
+          Container(
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
+              alignment: Alignment.bottomCenter,
+              child: MyButton(child: Text("Continue Journey"), onPressed: () => toNextStage())
+          ),
+          Column(children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
+                  alignment: Alignment.topLeft,
+                  child: Image(
+                    width: 200,
+                    height: 200,
+                    image: AssetImage('assets/images/frogg_merchant.gif'),
+                  ),
                 ),
-              ),
-              Container(
-                  alignment: Alignment.topCenter,
-                  color: Colors.blueGrey,
-                  height: 200,
-                  width: 500,
-                  child: AnimatedTextKit(
-                    repeatForever: false,
-                    totalRepeatCount: 1,
-                    pause: Duration(seconds: 2),
-                    animatedTexts: [
-                      TypedAnimation(""),
-                      TypedAnimation("I am sorry, we are out of hotdogs, Wariacie"),
-                      TypedAnimation("Try in the next Frogg Shop. It shouldn't be far."),
-                      TypedAnimation("Best of luck, traveler. Maybe a Monster Energy Drincc?"),
-                      TypedAnimation("")
-                    ],
-                  ))
-            ],
-          ),
-          Row(
-            children: [
-              HpLabel(),
-              MoneyLabel(),
-              PointLabel()
-            ],
-          ),
-          Row(
-            children: [
-              ProductToBuy("assets/images/shop/monsterek.png"),
-              ProductToBuy("assets/images/shop/specek.png"),
-              ProductToBuy("assets/images/shop/szlugi.png"),
-            ],
-          ),
-          Row(
-            children: [
-              PriceLabel(2),
-              PriceLabel(4),
-              PriceLabel(7)
-            ],
-          )
-        ],)
-      ],
+                Container(
+                    alignment: Alignment.topCenter,
+                    color: Colors.blueGrey,
+                    height: 200,
+                    width: 500,
+                    child: AnimatedTextKit(
+                      repeatForever: false,
+                      totalRepeatCount: 1,
+                      pause: Duration(seconds: 2),
+                      animatedTexts: [
+                        TypedAnimation(""),
+                        TypedAnimation("I am sorry, we are out of hotdogs, Wariacie"),
+                        TypedAnimation("Try in the next Frogg Shop. It shouldn't be far."),
+                        TypedAnimation("Best of luck, traveler. Maybe a Monster Energy Drincc?"),
+                        TypedAnimation("Remember about our today's sale: buy each product, and you will get twice żapp points for each next purchase"),
+                        TypedAnimation("")
+                      ],
+                    ))
+              ],
+            ),
+            Row(
+              children: [
+                HpLabel(),
+                MoneyLabel(),
+                PointLabel()
+              ],
+            ),
+            Row(
+              children: [
+                ProductToBuy(
+                  "assets/images/shop/monsterek.png",
+                  () => BuyProduct(2, 0),
+                  () => setState(() => gameRef.health = min(gameRef.health + 2, ASDGame.maxHealth))
+                ),
+                ProductToBuy(
+                  "assets/images/shop/specek.png",
+                  () => BuyProduct(4, 1),
+                  () => setState(() => gameRef.currentFrogPoints += 2)),
+                ProductToBuy(
+                  "assets/images/shop/szlugi.png",
+                  () => BuyProduct(7, 2),
+                    () => setState(() {
+                      gameRef.currentFrogPoints += 5;
+                      gameRef.health -= 1;
+                    }))
+              ],
+            ),
+            Row(
+              children: [
+                PriceLabel(2),
+                PriceLabel(4),
+                PriceLabel(7)
+              ],
+            )
+          ],)
+        ],
+      ),
     );
   }
 }

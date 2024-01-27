@@ -32,7 +32,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   late LevelPainter _levelPainter;
   int currentScore = 0;
   int currentFrogPoints = 0;
-  int _health = 5;
+  static const int maxHealth = 5;
+  int _health = maxHealth;
 
   int get health => _health;
   set health(int value) {
