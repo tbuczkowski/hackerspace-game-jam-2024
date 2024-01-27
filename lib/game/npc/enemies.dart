@@ -52,7 +52,7 @@ class WaterEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>
       flipHorizontally();
     }
     if (children.whereType<RectangleHitbox>().isNotEmpty) {
-      velocity.y += 400 * dt;
+      velocity.y += 1200 * dt;
     } else {
       velocity = Vector2.zero();
     }

@@ -112,12 +112,3 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
     }
   }
 }
-
-class CallbackEffect extends Effect {
-  CallbackEffect(super.controller);
-
-  @override
-  void apply(double progress) {
-    // TODO: implement apply
-  }
-}
