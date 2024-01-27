@@ -13,8 +13,23 @@ import '../style/my_button.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
 
-class MainMenuScreen extends StatelessWidget {
+class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
+
+  @override
+  State<MainMenuScreen> createState() => _MainMenuScreenState();
+
+  static const _gap = SizedBox(height: 10);
+}
+
+class _MainMenuScreenState extends State<MainMenuScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // context.read<AudioController>().playSfx(SfxType.bonk);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,33 +64,31 @@ class MainMenuScreen extends StatelessWidget {
               },
               child: const Text('Play'),
             ),
-            _gap,
+            MainMenuScreen._gap,
             MyButton(
               onPressed: () {
                 GoRouter.of(context).go('/3d_renderer');
               },
               child: const Text('3D Renderer'),
             ),
-            _gap,
+            MainMenuScreen._gap,
             MyButton(
               onPressed: () {
                 GoRouter.of(context).go('/raymarching');
               },
               child: const Text('Raymarching'),
             ),
-            _gap,
+            MainMenuScreen._gap,
             MyButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
               child: const Text('Settings'),
             ),
-            _gap,
+            MainMenuScreen._gap,
             const Text('Music by Mr Smith'),
-            _gap,
+            MainMenuScreen._gap,
           ],
         ),
       ),
     );
   }
-
-  static const _gap = SizedBox(height: 10);
 }

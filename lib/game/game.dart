@@ -5,17 +5,21 @@ import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hackerspace_game_jam_2024/audio/audio_controller.dart';
+import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game_state.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/hud.dart';
 
 import 'background_component.dart';
 
 class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
+  final AudioController audioController;
   late final Player _player;
   late final CameraTarget _cameraTarget;
   late final GameState _gameState;
@@ -26,8 +30,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   late Level level;
   late LevelPainter _levelPainter;
   int currentScore = 0;
-  int _health = 3;
-  //bool levelCompleted = false;
+  int _health = 5;
 
   int get health => _health;
   set health(int value) {
@@ -39,7 +42,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
 
   final LevelFactory _levelFactory = LevelFactory(LevelFactoryConfig.build());
 
-  ASDGame();
+  ASDGame(this.audioController);
 
   @override
   Color backgroundColor() {
@@ -47,7 +50,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   }
 
   @override
-  bool get debugMode => true;
+  bool get debugMode => false;
 
   @override
   Future<void> onLoad() async {
@@ -116,8 +119,14 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   }
 
   void launchGameOver() {
+    audioController.playSfx(SfxType.huhsh);
     _player.lockControls = true;
-    overlays.add('you_died');
+    _player.removeWhere((c) => c is ShapeHitbox);
+    _player.jumpTime = 0;
+    (_player as WalkingPlayer).jump(WalkingPlayer.jumpHeight * 0.5);
+    Future.delayed(Duration(milliseconds: 750)).then((_) {
+      overlays.add('you_died');
+    });
   }
 }
 

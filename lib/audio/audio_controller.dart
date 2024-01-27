@@ -44,11 +44,12 @@ class AudioController {
   ///
   /// Background music does not count into the [polyphony] limit. Music will
   /// never be overridden by sound effects because that would be silly.
-  AudioController({int polyphony = 2})
+  AudioController({int polyphony = 30})
       : assert(polyphony >= 1),
         _musicPlayer = AudioPlayer(playerId: 'musicPlayer'),
-        _sfxPlayers =
-            Iterable.generate(polyphony, (i) => AudioPlayer(playerId: 'sfxPlayer#$i')).toList(growable: false),
+        _sfxPlayers = Iterable.generate(
+                polyphony, (i) => AudioPlayer(playerId: 'sfxPlayer#$i')..setPlayerMode(PlayerMode.lowLatency))
+            .toList(growable: false),
         _playlist = Queue.of(List<Song>.of(songs)..shuffle()) {
     _musicPlayer.onPlayerComplete.listen(_handleSongFinished);
     unawaited(_preloadSfx());
@@ -67,7 +68,7 @@ class AudioController {
     _stopAllSound();
     _musicPlayer.dispose();
     for (final player in _sfxPlayers) {
-      player.dispose();
+      // player.dispose();
     }
   }
 
@@ -76,7 +77,7 @@ class AudioController {
   /// The controller will ignore this call when the attached settings'
   /// [SettingsController.audioOn] is `true` or if its
   /// [SettingsController.soundsOn] is `false`.
-  Future<void> playSfx(SfxType type) async {
+  void playSfx(SfxType type, [VoidCallback? onCompletion]) {
     _log.fine(() => 'Playing sound: $type');
     final options = soundTypeToFilename(type);
     final filename = options[_random.nextInt(options.length)];
@@ -84,17 +85,16 @@ class AudioController {
 
     final currentPlayer = _sfxPlayers[_currentSfxPlayer];
     _currentSfxPlayer = (_currentSfxPlayer + 1) % _sfxPlayers.length;
-    final Completer completer = Completer();
     currentPlayer.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.completed) {
-        completer.complete();
+        onCompletion?.call();
       }
     });
     currentPlayer.play(
       AssetSource('sfx/$filename'),
       volume: soundTypeToVolume(type),
+      mode: PlayerMode.lowLatency,
     );
-    return completer.future;
   }
 
   /// Enables the [AudioController] to listen to [AppLifecycleState] events,
