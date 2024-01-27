@@ -74,41 +74,16 @@ class ResponsiveScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                flex: isLarge ? 7 : 5,
-                child: SafeArea(
-                  right: false,
-                  maintainBottomViewPadding: true,
-                  minimum: padding,
-                  child: squarishMainArea,
-                ),
-              ),
-              Expanded(
                 flex: 3,
                 child: Column(
                   children: [
-                    SafeArea(
-                      bottom: false,
-                      left: false,
-                      maintainBottomViewPadding: true,
-                      child: Padding(
-                        padding: padding,
-                        child: topMessageArea,
-                      ),
+                    Spacer(
+                      flex: 5,
                     ),
-                    Expanded(
-                      child: SafeArea(
-                        top: false,
-                        left: false,
-                        maintainBottomViewPadding: true,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: padding,
-                            child: rectangularMenuArea,
-                          ),
-                        ),
-                      ),
-                    )
+                    rectangularMenuArea,
+                    Spacer(
+                      flex: 2,
+                    ),
                   ],
                 ),
               ),

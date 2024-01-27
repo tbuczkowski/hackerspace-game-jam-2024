@@ -17,8 +17,7 @@ class MyButton extends StatefulWidget {
   State<MyButton> createState() => _MyButtonState();
 }
 
-class _MyButtonState extends State<MyButton>
-    with SingleTickerProviderStateMixin {
+class _MyButtonState extends State<MyButton> with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 300),
     vsync: this,
@@ -42,9 +41,11 @@ class _MyButtonState extends State<MyButton>
       child: RotationTransition(
         turns: _controller.drive(const _MySineTween(0.005)),
         child: FilledButton(
-          onPressed: widget.onPressed,
-          child: widget.child,
-        ),
+            onPressed: widget.onPressed,
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all(10),
+            ),
+            child: widget.child),
       ),
     );
   }
