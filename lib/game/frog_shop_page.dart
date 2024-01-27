@@ -40,7 +40,6 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
         textStyle: TextStyle(
           decoration: TextDecoration.none,
           color: Colors.black,
-
         ),
         speed: const Duration(milliseconds: 50));
   }
@@ -51,8 +50,8 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
     ));
   }
 
-  Container PriceLabel(int price){
-    return Label(Text("$price \$"));
+  Widget PriceLabel(int price){
+    return TextLabel("$price\$");
   }
 
   Container Label(Widget content){
@@ -72,19 +71,33 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
     );
   }
 
+  Widget TextLabel(String value) {
+    return Label(
+      Center(
+        child: Text(value,
+          style: TextStyle(
+            decoration: TextDecoration.none,
+            color: Colors.black,
+            fontSize: 25,
+          ),
+        ),
+      )
+    );
+  }
+
   Widget HpLabel() {
     var hp = gameRef.health;
-    return Label(Text("HP: $hp"));
+    return TextLabel("HP: $hp");
   }
 
   Widget MoneyLabel() {
     var score = gameRef.currentScore;
-    return Label(Text("HP: $score"));
+    return TextLabel("Score: $score");
   }
 
   Widget PointLabel() {
     var currentFrogPoints = gameRef.currentFrogPoints;
-    return Label(Text("HP: $currentFrogPoints"));
+    return TextLabel("Żapp points: $currentFrogPoints");
   }
 
   @override
