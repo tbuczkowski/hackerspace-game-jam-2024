@@ -1,19 +1,21 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/star.dart';
 
-class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
+class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 velocity = Vector2.zero();
   final double maxXSpeed = 500;
 
   bool lockControls = false;
 
   final PositionComponent cameraFocusComponent = PositionComponent(position: Vector2(0, 1));
+  late final SpriteAnimationComponent spriteAnimationComponent;
 
   double? jumpTime;
   bool isOnGround = false;
@@ -27,19 +29,27 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
 
   Player({
     required super.position,
-  }) : super(size: Vector2.all(64), anchor: Anchor.center);
+  }) : super(size: Vector2.all(64), anchor: Anchor.center) {
+    spriteAnimationComponent = SpriteAnimationComponent(
+      // size: size,
+      size: Vector2.all(64 * 1.5),
+      position: Vector2(0, 64),
+      anchor: Anchor.bottomLeft,
+      // position: position,
+    );
+  }
 
   @override
   void update(double dt) {
+    spriteAnimationComponent.animation = updateAnimation();
     super.update(dt);
-    animation = updateAnimation();
   }
 
   SpriteAnimation updateAnimation() {
     const int movementThreshold = 50;
-    if(iframesActive) return _flinchAnimation;
-    if(velocity.y.abs() > movementThreshold) return _jumpAnimation;
-    if(velocity.x.abs() > movementThreshold) return _runAnimation;
+    if (iframesActive) return _flinchAnimation;
+    if (velocity.y.abs() > movementThreshold) return _jumpAnimation;
+    if (velocity.x.abs() > movementThreshold) return _runAnimation;
     return _idleAnimation;
   }
 
@@ -49,9 +59,10 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
     _idleAnimation = loadAnimation('character/idle.png', 4, positionOffset: Vector2(-5, 0));
     _flinchAnimation = loadAnimation('character/hurt.png', 2);
     _jumpAnimation = loadAnimation('character/jump.png', 4);
-    animation = _idleAnimation;
+    spriteAnimationComponent.animation = _idleAnimation;
 
-    add(CircleHitbox(radius: 48 / 2, position: Vector2(0, 16)));
+    add(CircleHitbox(radius: 48 / 2, position: Vector2(8, 16)));
+    add(spriteAnimationComponent);
     add(cameraFocusComponent);
   }
 
@@ -127,9 +138,10 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
   // This method runs an opacity effect on ember to make it blink.
   void hit() {
     if (!iframesActive) {
+      game.audioController.playSfx(SfxType.pain);
       game.health--;
       iframesActive = true;
-      add(
+      spriteAnimationComponent.add(
         OpacityEffect.fadeOut(
           EffectController(
             alternate: true,

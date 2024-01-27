@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 
@@ -91,7 +92,7 @@ class WaterEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>
   }
 
   void kill() {
-    final Component hitbox = children.firstWhere((element) => element is RectangleHitbox);
+    game.audioController.playSfx(SfxType.bonk);
     removeWhere((component) => component is ShapeHitbox);
     add(ScaleEffect.by(
       Vector2(1.7, 0.12),

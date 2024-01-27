@@ -47,6 +47,22 @@ List<String> soundTypeToFilename(SfxType type) {
       return const [
         'youdied.m4a',
       ];
+    case SfxType.bonk:
+      return const [
+        'bonk1.mp3',
+        'bonk2.flac',
+        'bonk3.flac',
+        'bonk4.flac',
+        'bonk5.flac',
+      ];
+    case SfxType.pain:
+      return const [
+        'pain1.wav',
+        'pain2.wav',
+        'pain3.wav',
+        'pain4.wav',
+        'pain5.wav',
+      ];
   }
 }
 
@@ -60,6 +76,8 @@ double soundTypeToVolume(SfxType type) {
     case SfxType.buttonTap:
     case SfxType.congrats:
     case SfxType.erase:
+    case SfxType.bonk:
+    case SfxType.pain:
     case SfxType.swishSwish:
       return 1.0;
     case SfxType.youDied:
@@ -75,4 +93,6 @@ enum SfxType {
   erase,
   swishSwish,
   youDied,
+  bonk,
+  pain,
 }
