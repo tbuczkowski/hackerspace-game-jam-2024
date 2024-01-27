@@ -6,13 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game_state.dart';
-import 'package:hackerspace_game_jam_2024/game/ui/hud.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
-import 'package:hackerspace_game_jam_2024/game/player/flying_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
-import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
+import 'package:hackerspace_game_jam_2024/game/ui/hud.dart';
 
 import 'background_component.dart';
 
@@ -84,6 +82,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
 
     _cameraTarget = CameraTarget(player: _player);
     world.add(_cameraTarget);
+    camera.viewfinder.zoom = 0.8;
     camera.viewport.add(Hud());
     camera.follow(_cameraTarget, maxSpeed: 1000);
     camera.viewfinder.anchor = Anchor.center;

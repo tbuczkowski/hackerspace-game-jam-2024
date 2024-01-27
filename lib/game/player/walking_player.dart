@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 
 class WalkingPlayer extends Player {
-  static const double jumpHeight = 250;
-  static const double jumpDistance = 150;
+  static const double jumpHeight = 300;
+  static const double jumpDistance = 250;
   static const double acceleration = 300;
 
   bool jumpIsPressed = false;
@@ -21,14 +21,18 @@ class WalkingPlayer extends Player {
         (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) ? 1 : 0;
     jumpIsPressed = keysPressed.contains(LogicalKeyboardKey.space);
     if (jumpTime == null && isOnGround) {
-      jumpTime = jumpIsPressed ? 0 : null;
-      if (jumpTime != null) {
-        final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 300);
-        velocity.y = (-2 * jumpHeight * horizontalComponent) / (jumpDistance);
-        isOnGround = false;
-      }
+      jump();
     }
     return true;
+  }
+
+  void jump() {
+    jumpTime = jumpIsPressed ? 0 : null;
+    if (jumpTime != null) {
+      final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 300);
+      velocity.y = (-2 * jumpHeight * horizontalComponent) / (jumpDistance);
+      isOnGround = false;
+    }
   }
 
   @override
@@ -53,7 +57,7 @@ class WalkingPlayer extends Player {
     if (jumpTime != null) {
       jumpTime = jumpTime! + dt;
     }
-    velocity.y += gravity * dt + ((horizontalDirection == 0 && !jumpIsPressed) ? gravity : 0) * dt;
+    velocity.y += gravity * dt + ((!jumpIsPressed) ? gravity : -0.1 * gravity) * dt;
     position += velocity * dt;
 
     super.update(dt);
