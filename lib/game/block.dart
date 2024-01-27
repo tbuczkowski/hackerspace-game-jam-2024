@@ -4,9 +4,10 @@ import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
 
 bool isTerrain(Component component) {
-  return component is GroundBlock || component is PlatformBlock;
+  return component is BaseTerrain;
 }
 
 class Block {

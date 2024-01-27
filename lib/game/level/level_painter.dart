@@ -5,6 +5,7 @@ import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/wall_block.dart';
 
 typedef _PaintBlock = Function(ASDGame, Block);
 
@@ -22,6 +23,9 @@ class LevelPainter {
     WaterEnemy: (gameRef, block) => gameRef.world.add(WaterEnemy(
           gridPosition: block.gridPosition,
         )),
+    WallBlock: (gameRef, block) => gameRef.world.add(WallBlock(
+          gridPosition: block.gridPosition
+        ))
   };
 
   final ASDGame gameRef;

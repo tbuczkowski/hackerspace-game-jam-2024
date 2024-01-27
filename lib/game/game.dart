@@ -53,6 +53,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       'heart.png',
       'star.png',
       'water_enemy.png',
+      'wall.png',
     ]);
 
     initializeGame();
