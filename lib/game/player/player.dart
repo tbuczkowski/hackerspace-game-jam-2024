@@ -1,16 +1,15 @@
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
-import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/star.dart';
 
 class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 velocity = Vector2.zero();
-  final double maxXSpeed = 300;
+  final double maxXSpeed = 500;
 
   final PositionComponent cameraFocusComponent = PositionComponent(position: Vector2(0, 1));
 
@@ -33,7 +32,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
         stepTime: 0.12,
       ),
     );
-    add(CircleHitbox());
+    add(CircleHitbox(radius: 48 / 2, position: Vector2(8, 16)));
     add(cameraFocusComponent);
   }
 
