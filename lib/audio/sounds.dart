@@ -76,6 +76,10 @@ List<String> soundTypeToFilename(SfxType type) {
         'metal_steps_09.wav',
         'metal_steps_10.wav',
       ];
+    case SfxType.slide:
+      return const [
+        'tires_squal_loop.m4a',
+      ];
     case SfxType.jump:
       return const [
         'slightscream-08.flac',
@@ -95,8 +99,9 @@ double soundTypeToVolume(SfxType type) {
   switch (type) {
     case SfxType.huhsh:
       return 0.4;
+    case SfxType.slide:
     case SfxType.wssh:
-      return 0.2;
+      return 0.1;
     case SfxType.step:
       return 0.3;
     case SfxType.buttonTap:
@@ -125,4 +130,5 @@ enum SfxType {
   pain,
   step,
   jump,
+  slide,
 }

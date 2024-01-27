@@ -18,6 +18,7 @@ class WalkingPlayer extends Player {
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    final int prevDirection = horizontalDirection;
     horizontalDirection = 0;
     if (!lockControls) {
       horizontalDirection +=
@@ -28,6 +29,20 @@ class WalkingPlayer extends Player {
           (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight))
               ? 1
               : 0;
+      print((
+        prevDirection,
+        horizontalDirection,
+        velocity.x.abs(),
+        prevDirection.sign != horizontalDirection.sign,
+        horizontalDirection != 0,
+        velocity.x.abs() > 100
+      ));
+      if (prevDirection.sign != horizontalDirection.sign &&
+          horizontalDirection != 0 &&
+          velocity.x.abs() > 100 &&
+          isOnGround) {
+        game.audioController.playSfx(SfxType.slide);
+      }
       final bool wasJumpPressed = jumpIsPressed;
       jumpIsPressed = keysPressed.contains(LogicalKeyboardKey.space);
       if (!wasJumpPressed && jumpTime == null && isOnGround) {
