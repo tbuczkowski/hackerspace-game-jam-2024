@@ -16,7 +16,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
   double? jumpTime;
   bool isOnGround = false;
   int horizontalDirection = 0;
-  bool hitByEnemy = false;
+  bool iframesActive = false;
 
   late final SpriteAnimation _runAnimation;
   late final SpriteAnimation _idleAnimation;
@@ -124,20 +124,20 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
 
   // This method runs an opacity effect on ember to make it blink.
   void hit() {
-    if (!hitByEnemy) {
+    if (!iframesActive) {
       game.health--;
-      hitByEnemy = true;
+      iframesActive = true;
+      add(
+        OpacityEffect.fadeOut(
+          EffectController(
+            alternate: true,
+            duration: 0.1,
+            repeatCount: 5,
+          ),
+        )..onComplete = () {
+            iframesActive = false;
+          },
+      );
     }
-    add(
-      OpacityEffect.fadeOut(
-        EffectController(
-          alternate: true,
-          duration: 0.1,
-          repeatCount: 5,
-        ),
-      )..onComplete = () {
-          hitByEnemy = false;
-        },
-    );
   }
 }
