@@ -9,14 +9,12 @@ import 'package:hackerspace_game_jam_2024/game/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
 
-class Player extends SpriteAnimationComponent
-    with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
+class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 velocity = Vector2.zero();
   final double horizontalMoveSpeed = 300;
   static const double jumpHeight = 250;
   static const double jumpDistance = 150;
-  final PositionComponent cameraFocusComponent =
-      PositionComponent(position: Vector2(0, 1));
+  final PositionComponent cameraFocusComponent = PositionComponent(position: Vector2(0, 1));
 
   double? jumpTime;
   bool isOnGround = false;
@@ -44,14 +42,10 @@ class Player extends SpriteAnimationComponent
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horizontalDirection = 0;
-    horizontalDirection += (keysPressed.contains(LogicalKeyboardKey.keyA) ||
-            keysPressed.contains(LogicalKeyboardKey.arrowLeft))
-        ? -1
-        : 0;
-    horizontalDirection += (keysPressed.contains(LogicalKeyboardKey.keyD) ||
-            keysPressed.contains(LogicalKeyboardKey.arrowRight))
-        ? 1
-        : 0;
+    horizontalDirection +=
+        (keysPressed.contains(LogicalKeyboardKey.keyA) || keysPressed.contains(LogicalKeyboardKey.arrowLeft)) ? -1 : 0;
+    horizontalDirection +=
+        (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) ? 1 : 0;
     if (jumpTime == null && isOnGround) {
       jumpTime = keysPressed.contains(LogicalKeyboardKey.space) ? 0 : null;
       if (jumpTime != null) {
@@ -80,10 +74,7 @@ class Player extends SpriteAnimationComponent
       jumpTime = jumpTime! + dt;
     }
     velocity.y += gravity * dt;
-    print(velocity);
     position += velocity * dt;
-
-    game.camera.viewport.position = velocity.normalized() * -280;
 
     super.update(dt);
   }
@@ -93,9 +84,7 @@ class Player extends SpriteAnimationComponent
     if (isTerrain(other)) {
       if (intersectionPoints.length == 2) {
         // Calculate the collision normal and separation distance.
-        final Vector2 mid = (intersectionPoints.elementAt(0) +
-                intersectionPoints.elementAt(1)) /
-            2;
+        final Vector2 mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
 
         final collisionNormal = absoluteCenter - mid;
         final separationDistance = (size.x / 2) - collisionNormal.length;

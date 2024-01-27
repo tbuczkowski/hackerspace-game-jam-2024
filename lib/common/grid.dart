@@ -1,8 +1,9 @@
 import 'dart:async';
+
 import 'package:flame/components.dart';
 import 'package:hackerspace_game_jam_2024/common/grid_component.dart';
 import 'package:hackerspace_game_jam_2024/common/grid_tile.dart';
-import 'package:hackerspace_game_jam_2024/game/asd.dart';
+import 'package:hackerspace_game_jam_2024/game/game.dart';
 
 /// FIXME: check cubit performance for state management
 class Grid extends PositionComponent with HasGameRef<ASDGame> {

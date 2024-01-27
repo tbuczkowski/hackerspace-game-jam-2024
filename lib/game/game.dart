@@ -11,9 +11,10 @@ import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/player.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
 
-class ASDGame extends FlameGame
-    with HasCollisionDetection, HasKeyboardHandlerComponents {
-  late Player _player;
+class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
+  late final Player _player;
+  late final CameraTarget _cameraTarget;
+
   double objectSpeed = 0.0;
   late double lastBlockXPosition = 0.0;
   late UniqueKey lastBlockKey;
@@ -90,9 +91,28 @@ class ASDGame extends FlameGame
     _player = Player(
       position: Vector2(128, canvasSize.y - 256),
     );
+    _cameraTarget = CameraTarget(player: _player);
+
     world.add(_player);
+    world.add(_cameraTarget);
     camera.viewport.add(Hud());
-    camera.follow(_player, maxSpeed: 500);
+    camera.follow(_cameraTarget, maxSpeed: 1000);
     camera.viewfinder.anchor = Anchor.center;
+  }
+}
+
+class CameraTarget extends PositionComponent with HasGameRef<ASDGame> {
+  final Player player;
+
+  CameraTarget({
+    super.position,
+    required this.player,
+  });
+
+  @override
+  void update(double dt) {
+    position = player.position + Vector2(100 * player.scale.x.sign, 0);
+    position = Vector2(position.x, position.y.clamp(-double.infinity, 400));
+    super.update(dt);
   }
 }
