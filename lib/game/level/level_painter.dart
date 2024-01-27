@@ -31,7 +31,7 @@ class LevelPainter {
           gridPosition: block.gridPosition,
         )),
     Hobo: (gameRef, block) => gameRef.world.add(Hobo(
-          gridPosition: block.gridPosition,
+          gridPosition: block.gridPosition, speechText: (block.extras as SpeechDef?)?.text
         )),
     WallBlock: (gameRef, block) => gameRef.world.add(WallBlock(
           gridPosition: block.gridPosition

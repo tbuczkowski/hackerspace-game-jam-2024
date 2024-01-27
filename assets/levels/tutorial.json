@@ -1,0 +1,26 @@
+{
+  "filename": "assets/levels/tutorial.bmp",
+  "playerMovementType": "walking",
+  "speeches": [
+    {
+      "x": 4,
+      "y": 1,
+      "text": "Hello there adventurer!"
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "text": "Use space to jump and grab some cash from platform"
+    },
+    {
+      "x": 21,
+      "y": 5,
+      "text": "Jump on enemies to eliminate them. Do not let them take your Specjals!"
+    },
+    {
+      "x": 39,
+      "y": 1,
+      "text": "Frog shop on the horizon! Go there to end the level."
+    }
+  ]
+}
