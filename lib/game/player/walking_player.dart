@@ -8,6 +8,8 @@ class WalkingPlayer extends Player {
   static const double jumpDistance = 150;
   static const double acceleration = 300;
 
+  bool jumpIsPressed = false;
+
   WalkingPlayer({required super.position});
 
   @override
@@ -17,8 +19,9 @@ class WalkingPlayer extends Player {
         (keysPressed.contains(LogicalKeyboardKey.keyA) || keysPressed.contains(LogicalKeyboardKey.arrowLeft)) ? -1 : 0;
     horizontalDirection +=
         (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) ? 1 : 0;
+    jumpIsPressed = keysPressed.contains(LogicalKeyboardKey.space);
     if (jumpTime == null && isOnGround) {
-      jumpTime = keysPressed.contains(LogicalKeyboardKey.space) ? 0 : null;
+      jumpTime = jumpIsPressed ? 0 : null;
       if (jumpTime != null) {
         final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 300);
         velocity.y = (-2 * jumpHeight * horizontalComponent) / (jumpDistance);
@@ -30,7 +33,6 @@ class WalkingPlayer extends Player {
 
   @override
   void update(double dt) {
-    final bool acceleratingInCurrentDirection = velocity.x.sign == horizontalDirection.sign && horizontalDirection != 0;
     final bool acceleratingInOppositeDirection =
         velocity.x.sign != horizontalDirection.sign && horizontalDirection != 0;
     final bool shouldDecelerate = horizontalDirection == 0 && velocity.x != 0;
@@ -38,7 +40,6 @@ class WalkingPlayer extends Player {
     velocity.x -=
         shouldDecelerate ? (acceleration * 1.5 * dt).clamp(-velocity.x.abs(), velocity.x.abs()) * velocity.x.sign : 0;
     velocity.x = clampDouble(velocity.x, -maxXSpeed, maxXSpeed);
-    // velocity.x = horizontalDirection * maxXSpeed;
     if (horizontalDirection < 0 && scale.x > 0) {
       flipHorizontally();
     } else if (horizontalDirection > 0 && scale.x < 0) {
@@ -52,7 +53,7 @@ class WalkingPlayer extends Player {
     if (jumpTime != null) {
       jumpTime = jumpTime! + dt;
     }
-    velocity.y += gravity * dt;
+    velocity.y += gravity * dt + ((horizontalDirection == 0 && !jumpIsPressed) ? gravity : 0) * dt;
     position += velocity * dt;
 
     super.update(dt);
