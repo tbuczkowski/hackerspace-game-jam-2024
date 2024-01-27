@@ -111,7 +111,7 @@ double soundTypeToVolume(SfxType type) {
     case SfxType.wssh:
       return 0.1;
     case SfxType.step:
-      return 0.3;
+      return 0.6;
     case SfxType.buttonTap:
     case SfxType.congrats:
     case SfxType.erase:

@@ -15,7 +15,7 @@ final Map<Color, Type> colorToBlockType = {
   Color(0x010000FF): KozakEnemy,
   Color(0x01FFFF00): Money,
   Color(0x01FF00FF): WallBlock,
-  Color(0x01c08040): Gate,
+  Color(0x01c08040): FrogshopGate,
   Color(0x010080C0): Hobo,
 };
 

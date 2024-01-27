@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
+import 'package:flame/geometry.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/audio/audio_controller.dart';
@@ -14,7 +15,9 @@ import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/scooter_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/hud.dart';
 
 import 'background_component.dart';
@@ -36,6 +39,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   int _health = maxHealth;
 
   int get health => _health;
+
   set health(int value) {
     _health = value;
     if (_health == 0) {
@@ -66,6 +70,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       'static_money.png',
       'wall.png',
       'gate.png',
+      'frogshop.png',
       'hobo.png',
       'character/run.png',
       'character/idle.png',
@@ -93,10 +98,10 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     try {
       _gameState = await GameState.getInstance();
       final LevelConfig levelConfig = _gameState.getCurrentLevelConfig();
-      print(songs[_gameState.currentLevel % (songs.length + 1)]);
+      print(songs[_gameState.currentLevel % songs.length]);
       await audioController.musicPlayer.stop();
       audioController.musicPlayer.setReleaseMode(ReleaseMode.loop);
-      audioController.musicPlayer.play(songs[_gameState.currentLevel % (songs.length + 1)]);
+      audioController.musicPlayer.play(songs[_gameState.currentLevel % songs.length]);
 
       print("Loading level ${_gameState.getCurrentLevelConfig().filename}");
       level = await _levelFactory.build(levelConfig);
@@ -138,10 +143,30 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     _player.lockControls = true;
     _player.removeWhere((c) => c is ShapeHitbox);
     _player.jumpTime = 0;
-    (_player as WalkingPlayer).jump(WalkingPlayer.jumpHeight * 0.5);
+    if (_player is WalkingPlayer) {
+      (_player as WalkingPlayer).jump(WalkingPlayer.jumpHeight * 0.5);
+    }
     Future.delayed(Duration(milliseconds: 750)).then((_) {
       overlays.add('you_died');
     });
+  }
+
+  @override
+  void update(double dt) {
+    if (_player is ScooterPlayer) {
+      handleScooterCollision();
+    }
+    super.update(dt);
+  }
+
+  void handleScooterCollision() {
+    final ray = Ray2(origin: _player.position, direction: Vector2(1, 0)..normalize());
+    final result = collisionDetection.raycast(ray, maxDistance: 32);
+    if (result != null && result.hitbox?.parent is BaseTerrain) {
+      _player.velocity.x = 0;
+      _player.position -= Vector2(100, 0);
+      _player.hit();
+    }
   }
 }
 
