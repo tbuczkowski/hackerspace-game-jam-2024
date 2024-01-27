@@ -22,5 +22,12 @@
       "y": 1,
       "text": "Frog shop on the horizon! Go there to end the level."
     }
+  ],
+  "enemyMovementPaths": [
+    {
+      "y": 1,
+      "leftXBoundary": 26,
+      "rightXBoundary": 45
+    }
   ]
 }

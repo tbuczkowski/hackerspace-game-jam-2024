@@ -5,24 +5,26 @@ import 'package:flutter/foundation.dart';
 import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 
 class KozakEnemy extends PositionComponent with HasGameReference<ASDGame>, CollisionCallbacks {
   final Vector2 gridPosition;
 
   bool isDead = false;
 
-  Vector2 velocity = Vector2.zero();
+  Vector2 velocity = Vector2(maxXSpeed, 0);
 
-  final double maxXSpeed = 100;
+  static const double maxXSpeed = 100;
   static const double acceleration = 300;
+  final EnemyMovementDef? movementDef;
 
   int horizontalDirection = -1;
 
   late final SpriteAnimationComponent spriteAnimationComponent;
 
-  KozakEnemy({
-    required this.gridPosition,
-  }) : super(size: Vector2.all(64), anchor: Anchor.bottomLeft);
+  KozakEnemy({required this.gridPosition, this.movementDef}) : super(size: Vector2.all(64), anchor: Anchor.bottomLeft);
 
   @override
   void onLoad() {
@@ -46,32 +48,58 @@ class KozakEnemy extends PositionComponent with HasGameReference<ASDGame>, Colli
 
   @override
   void update(double dt) {
-    final bool acceleratingInOppositeDirection =
-        velocity.x.sign != horizontalDirection.sign && horizontalDirection != 0;
-    final bool shouldDecelerate = horizontalDirection == 0 && velocity.x != 0;
-    velocity.x += horizontalDirection * acceleration * (acceleratingInOppositeDirection ? 3.5 : 1) * dt;
-    velocity.x -=
-        shouldDecelerate ? (acceleration * 1.5 * dt).clamp(-velocity.x.abs(), velocity.x.abs()) * velocity.x.sign : 0;
-    velocity.x = clampDouble(velocity.x, -maxXSpeed, maxXSpeed);
+    _OffendingDirection? boundsCheck = _canMove();
+
+    if (boundsCheck != null) {
+      print("BoundCheck failed, next horizontal direction is ${boundsCheck.horizontalDirection}");
+      horizontalDirection = boundsCheck.horizontalDirection;
+    }
+
+    // final bool acceleratingInOppositeDirection =
+    //     velocity.x.sign != horizontalDirection.sign && horizontalDirection != 0;
+    // final bool shouldDecelerate = horizontalDirection == 0 && velocity.x != 0;
+    // velocity.x += horizontalDirection * acceleration * (acceleratingInOppositeDirection ? 3.5 : 1) * dt;
+    // velocity.x -=
+    //     shouldDecelerate ? (acceleration * 1.5 * dt).clamp(-velocity.x.abs(), velocity.x.abs()) * velocity.x.sign : 0;
+    // velocity.x = clampDouble(velocity.x, -maxXSpeed, maxXSpeed);
+
     if (horizontalDirection < 0 && scale.x > 0) {
       flipHorizontally();
     } else if (horizontalDirection > 0 && scale.x < 0) {
       flipHorizontally();
     }
-    if (children.whereType<RectangleHitbox>().isNotEmpty) {
-      velocity.y += 1200 * dt;
-    } else {
-      velocity = Vector2.zero();
+
+    velocity.x = horizontalDirection * maxXSpeed;
+
+    if (!isDead) {
+      position += velocity * dt.abs();
     }
 
-    position += velocity * dt;
+    print("Enemy pos: $position, velocity: $velocity");
 
     super.update(dt);
   }
 
+  _OffendingDirection? _canMove() {
+    if (movementDef == null) {
+      return null;
+    }
+
+    if (position.x <= ((movementDef!.leftXBoundary + 1) * size.x)) {
+      return _OffendingDirection.left;
+    }
+
+    if (position.x >= ((movementDef!.rightXBoundary - 1) * size.x)) {
+      return _OffendingDirection.right;
+    }
+
+    return null;
+  }
+
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (isTerrain(other) && intersectionPoints.length == 2) {
+    if ((isTerrain(other) || other is NPCMovementLimiter || other is FrogshopBackground) &&
+        intersectionPoints.length == 2) {
       onTerrainCollision(intersectionPoints);
     }
 
@@ -90,6 +118,11 @@ class KozakEnemy extends PositionComponent with HasGameReference<ASDGame>, Colli
     // ember must be on ground.
     if (Vector2(0, -1).dot(collisionNormal) > 0.9) {
       velocity.y = 0;
+    }
+
+    // Turn around after collision in x-plane
+    if (Vector2(1, 0).dot(collisionNormal).abs() > 0.9) {
+      horizontalDirection *= -1;
     }
 
     // Resolve collision by moving ember along
@@ -114,4 +147,13 @@ class KozakEnemy extends PositionComponent with HasGameReference<ASDGame>, Colli
       ),
     ));
   }
+}
+
+enum _OffendingDirection {
+  left(1),
+  right(-1);
+
+  final int horizontalDirection;
+
+  const _OffendingDirection(this.horizontalDirection);
 }

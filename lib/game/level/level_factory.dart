@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory_consts.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/hobo.dart';
 import 'package:image/image.dart' as img;
 
 class LevelFactoryConfig {
@@ -50,7 +52,7 @@ class LevelFactory {
         blocks.add(Block(
           currentGridPos,
           blockType,
-          extras: _getExtras(config, currentGridPos),
+          extras: _getExtras(config, blockType, currentGridPos),
         ));
       }
     }
@@ -67,8 +69,16 @@ class LevelFactory {
     );
   }
 
-  SpeechDef? _getExtras(LevelConfig config, Vector2 gridPos) =>
-      config.speeches.firstWhereOrNull((s) => s.x == gridPos.x && s.y == gridPos.y);
+  Object? _getExtras(LevelConfig config, Type blockType, Vector2 gridPos) {
+    if (blockType == Hobo) {
+      return config.speeches.firstWhereOrNull((s) => s.x == gridPos.x && s.y == gridPos.y);
+    } else if (blockType == KozakEnemy) {
+      return config.enemyMovements
+          .firstWhereOrNull((m) => m.y == gridPos.y && m.rightXBoundary > gridPos.x && m.leftXBoundary < gridPos.x);
+    }
+
+    return null;
+  }
 
   Color _getPixelColor(img.Pixel p) => Color.fromRGBO(p.r.toInt(), p.g.toInt(), p.b.toInt(), p.a.toDouble());
 
