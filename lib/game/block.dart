@@ -1,10 +1,10 @@
 import 'package:flame/components.dart';
-import 'package:hackerspace_game_jam_2024/game/enemies.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
-import 'package:hackerspace_game_jam_2024/game/star.dart';
+import 'package:hackerspace_game_jam_2024/game/ui/star.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
 
 bool isTerrain(Component component) {

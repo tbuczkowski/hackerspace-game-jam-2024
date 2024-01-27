@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
-import 'package:hackerspace_game_jam_2024/game/heart.dart';
+import 'package:hackerspace_game_jam_2024/game/ui/heart.dart';
 
 class Hud extends PositionComponent with HasGameReference<ASDGame> {
   Hud({

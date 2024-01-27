@@ -1,7 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
-import 'package:flutter/material.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 
 class Gate extends SpriteComponent with HasGameReference<ASDGame> {

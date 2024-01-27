@@ -1,10 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
-import 'package:hackerspace_game_jam_2024/game/enemies.dart';
-import 'package:hackerspace_game_jam_2024/game/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
-import 'package:hackerspace_game_jam_2024/game/star.dart';
 
 class FlyingPlayer extends Player {
 

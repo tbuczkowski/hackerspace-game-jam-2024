@@ -1,12 +1,12 @@
 import 'dart:ui';
 
-import 'package:hackerspace_game_jam_2024/game/enemies.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/wall_block.dart';
-import 'package:hackerspace_game_jam_2024/game/hobo.dart';
-import 'package:hackerspace_game_jam_2024/game/star.dart';
-import 'package:hackerspace_game_jam_2024/game/gate.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/hobo.dart';
+import 'package:hackerspace_game_jam_2024/game/ui/star.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 
 
 final Map<Color, Type> colorToBlockType = {

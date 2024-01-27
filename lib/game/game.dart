@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
@@ -6,7 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
-import 'package:hackerspace_game_jam_2024/game/hud.dart';
+import 'package:hackerspace_game_jam_2024/game/ui/hud.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_painter.dart';
