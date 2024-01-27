@@ -22,8 +22,7 @@ import 'package:hackerspace_game_jam_2024/game/ui/hud.dart';
 
 import 'background_component.dart';
 
-class ASDGame extends FlameGame
-    with HasCollisionDetection, HasKeyboardHandlerComponents {
+class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
   final AudioController audioController;
   late final Player _player;
   late final CameraTarget _cameraTarget;
@@ -159,8 +158,7 @@ class ASDGame extends FlameGame
   }
 
   void handleScooterCollision() {
-    final ray =
-        Ray2(origin: _player.position, direction: Vector2(1, 0)..normalize());
+    final ray = Ray2(origin: _player.position, direction: Vector2(1, 0)..normalize());
     final result = collisionDetection.raycast(ray, maxDistance: 32);
     if (result != null && result.hitbox?.parent is BaseTerrain) {
       _player.velocity.x = 0;
@@ -180,8 +178,7 @@ class CameraTarget extends PositionComponent with HasGameRef<ASDGame> {
 
   @override
   void update(double dt) {
-    position = player.position +
-        Vector2(100 * (player.velocity.x / player.maxXSpeed), 0);
+    position = player.position + Vector2(100 * (player.velocity.x / player.maxXSpeed), 0);
     position = Vector2(position.x, position.y.clamp(-double.infinity, 400));
     super.update(dt);
   }

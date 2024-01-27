@@ -24,7 +24,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
 
   late final SpriteAnimation _runAnimation;
   late final SpriteAnimation _idleAnimation;
-  late final SpriteAnimation _jumpAnimation;
+  late final SpriteAnimation jumpAnimation;
   late final SpriteAnimation _flinchAnimation;
 
   Player({
@@ -33,8 +33,8 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     spriteAnimationComponent = SpriteAnimationComponent(
       // size: size,
       size: Vector2.all(64 * 1.5),
-      position: Vector2(0, 64),
-      anchor: Anchor.bottomLeft,
+      position: Vector2(32 + 10, 16),
+      anchor: Anchor.center,
       // position: position,
     );
   }
@@ -55,7 +55,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
   SpriteAnimation updateAnimation() {
     const int movementThreshold = 50;
     if (iframesActive) return _flinchAnimation;
-    if (velocity.y.abs() > movementThreshold) return _jumpAnimation;
+    if (velocity.y.abs() > movementThreshold) return jumpAnimation;
     if (velocity.x.abs() > movementThreshold) return _runAnimation;
     return _idleAnimation;
   }
@@ -65,7 +65,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     _runAnimation = loadAnimation('character/run.png', 6);
     _idleAnimation = loadAnimation('character/idle.png', 4, positionOffset: Vector2(-5, 0));
     _flinchAnimation = loadAnimation('character/hurt.png', 2, positionOffset: Vector2(-5, 0));
-    _jumpAnimation = loadAnimation('character/jump.png', 4, loop: false);
+    jumpAnimation = loadAnimation('character/jump.png', 4, loop: false);
     spriteAnimationComponent.animation = _idleAnimation;
 
     add(CircleHitbox(radius: 48 / 2, position: Vector2(8, 16)));
