@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 
 class WalkingPlayer extends Player {
@@ -21,12 +23,12 @@ class WalkingPlayer extends Player {
         (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight)) ? 1 : 0;
     jumpIsPressed = keysPressed.contains(LogicalKeyboardKey.space);
     if (jumpTime == null && isOnGround) {
-      jump();
+      jump(jumpHeight);
     }
     return true;
   }
 
-  void jump() {
+  void jump(double jumpHeight) {
     jumpTime = jumpIsPressed ? 0 : null;
     if (jumpTime != null) {
       final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 300);
@@ -61,5 +63,27 @@ class WalkingPlayer extends Player {
     position += velocity * dt;
 
     super.update(dt);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is WaterEnemy && !iframesActive && intersectionPoints.length == 2) {
+      final Vector2 mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
+
+      final collisionNormal = absoluteCenter - mid;
+      final separationDistance = (size.x / 2) - collisionNormal.length;
+      collisionNormal.normalize();
+
+      // If collision normal is almost upwards,
+      // ember must be on ground.
+      print(velocity);
+      if (Vector2(0, -1).dot(collisionNormal) > 0.8 && velocity.y > 100 && position.y < other.position.y) {
+        other.kill();
+        jump(jumpHeight / 3);
+        return;
+      }
+    }
+
+    super.onCollision(intersectionPoints, other);
   }
 }

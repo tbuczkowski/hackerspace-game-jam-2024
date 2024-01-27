@@ -41,9 +41,17 @@ class WaterEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>
 
   @override
   void update(double dt) {
-    velocity.x = game.objectSpeed;
-    // position += velocity * dt;
-    // if (position.x < -size.x) removeFromParent();
     super.update(dt);
+  }
+
+  void kill() {
+    final Component hitbox = children.firstWhere((element) => element is RectangleHitbox);
+    remove(hitbox);
+    add(ScaleEffect.by(
+      Vector2(1.7, 0.12),
+      EffectController(
+        duration: 0.07,
+      ),
+    ));
   }
 }
