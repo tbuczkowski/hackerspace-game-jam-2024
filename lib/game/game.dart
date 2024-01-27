@@ -92,10 +92,10 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     try {
       _gameState = await GameState.getInstance();
       final LevelConfig levelConfig = _gameState.getCurrentLevelConfig();
-      print(songs[_gameState.currentLevel % (songs.length + 1)]);
+      print(songs[_gameState.currentLevel % songs.length]);
       await audioController.musicPlayer.stop();
       audioController.musicPlayer.setReleaseMode(ReleaseMode.loop);
-      audioController.musicPlayer.play(songs[_gameState.currentLevel % (songs.length + 1)]);
+      audioController.musicPlayer.play(songs[_gameState.currentLevel % songs.length]);
 
       print("Loading level ${_gameState.getCurrentLevelConfig().filename}");
       level = await _levelFactory.build(levelConfig);

@@ -50,6 +50,7 @@ class AudioController {
                 polyphony, (i) => AudioPlayer(playerId: 'sfxPlayer#$i')..setPlayerMode(PlayerMode.lowLatency))
             .toList(growable: false),
         _playlist = List<Song>.of(songs) {
+    musicPlayer.setVolume(0.15);
     unawaited(_preloadSfx());
   }
 
