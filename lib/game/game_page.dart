@@ -1,7 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:hackerspace_game_jam_2024/game/you_died_page.dart';
-
+import 'package:hackerspace_game_jam_2024/game/frog_shop_page.dart';
 import 'game.dart';
 
 class GamePage extends StatefulWidget {
@@ -20,6 +20,7 @@ class _GamePageState extends State<GamePage> {
         game: ASDGame(),
         overlayBuilderMap: {
           'you_died': (BuildContext context, ASDGame game) => YouDiedPage(),
+          'frog_shop': (BuildContext context, ASDGame game) => FrogShopPage(game),
         },
       ),
     );

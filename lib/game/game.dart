@@ -1,3 +1,4 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
@@ -26,6 +27,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   late LevelPainter _levelPainter;
   int currentScore = 0;
   int _health = 3;
+  //bool levelCompleted = false;
 
   int get health => _health;
   set health(int value) {
@@ -108,7 +110,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       GoRouter.of(buildContext!).replace('/');
     } else {
       _gameState.nextLevel(currentScore);
-      GoRouter.of(buildContext!).replace('/game_page');
+      pauseEngine();
+      overlays.add('frog_shop');
     }
   }
 
