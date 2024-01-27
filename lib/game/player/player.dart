@@ -42,6 +42,13 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
   @override
   void update(double dt) {
     spriteAnimationComponent.animation = updateAnimation();
+    if (spriteAnimationComponent.animation == _runAnimation) {
+      spriteAnimationComponent.animationTicker!.onFrame = (int currentIndex) {
+        if ((currentIndex - 1) % 3 == 0) {
+          game.audioController.playSfx(SfxType.step);
+        }
+      };
+    }
     super.update(dt);
   }
 
@@ -58,7 +65,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     _runAnimation = loadAnimation('character/run.png', 6);
     _idleAnimation = loadAnimation('character/idle.png', 4, positionOffset: Vector2(-5, 0));
     _flinchAnimation = loadAnimation('character/hurt.png', 2, positionOffset: Vector2(-5, 0));
-    _jumpAnimation = loadAnimation('character/jump.png', 4);
+    _jumpAnimation = loadAnimation('character/jump.png', 4, loop: false);
     spriteAnimationComponent.animation = _idleAnimation;
 
     add(CircleHitbox(radius: 48 / 2, position: Vector2(8, 16)));
@@ -66,7 +73,12 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     add(cameraFocusComponent);
   }
 
-  SpriteAnimation loadAnimation(String path, int numberOfFrames, {Vector2? positionOffset}) {
+  SpriteAnimation loadAnimation(
+    String path,
+    int numberOfFrames, {
+    Vector2? positionOffset,
+    bool loop = true,
+  }) {
     return SpriteAnimation.fromFrameData(
       game.images.fromCache(path),
       SpriteAnimationData.sequenced(
@@ -74,6 +86,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
         textureSize: Vector2.all(48),
         stepTime: 0.12,
         texturePosition: positionOffset,
+        loop: loop,
       ),
     );
   }

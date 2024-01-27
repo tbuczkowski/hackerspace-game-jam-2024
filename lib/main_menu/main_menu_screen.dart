@@ -26,7 +26,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      // context.read<AudioController>().playSfx(SfxType.swishSwish);
+      // context.read<AudioController>().playSfx(SfxType.bonk);
     });
     super.initState();
   }
