@@ -113,7 +113,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       GoRouter.of(buildContext!).replace('/');
     } else {
       _gameState.nextLevel(currentScore);
-      GoRouter.of(buildContext!).replace('/game_page');
+      pauseEngine();
+      overlays.add('frog_shop');
     }
   }
 
