@@ -8,7 +8,6 @@ import 'package:hackerspace_game_jam_2024/game/game_state.dart';
 import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
-import '../audio/sounds.dart';
 import '../settings/settings.dart';
 import '../style/my_button.dart';
 import '../style/palette.dart';
@@ -46,7 +45,6 @@ class MainMenuScreen extends StatelessWidget {
             MyButton(
               onPressed: () {
                 GameState.reset();
-                audioController.playSfx(SfxType.buttonTap);
                 GoRouter.of(context).go('/game_page');
               },
               child: const Text('Play'),
