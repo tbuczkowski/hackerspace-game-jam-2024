@@ -11,7 +11,7 @@ import 'package:hackerspace_game_jam_2024/game/star.dart';
 
 class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 velocity = Vector2.zero();
-  final double horizontalMoveSpeed = 300;
+  final double maxXSpeed = 300;
   static const double jumpHeight = 250;
   static const double jumpDistance = 150;
   final PositionComponent cameraFocusComponent = PositionComponent(position: Vector2(0, 1));
@@ -59,7 +59,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
 
   @override
   void update(double dt) {
-    velocity.x = horizontalDirection * horizontalMoveSpeed;
+    velocity.x = horizontalDirection * maxXSpeed;
     if (horizontalDirection < 0 && scale.x > 0) {
       flipHorizontally();
     } else if (horizontalDirection > 0 && scale.x < 0) {

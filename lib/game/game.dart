@@ -111,7 +111,7 @@ class CameraTarget extends PositionComponent with HasGameRef<ASDGame> {
 
   @override
   void update(double dt) {
-    position = player.position + Vector2(100 * player.scale.x.sign, 0);
+    position = player.position + Vector2(100 * (player.velocity.x / player.maxXSpeed), 0);
     position = Vector2(position.x, position.y.clamp(-double.infinity, 400));
     super.update(dt);
   }
