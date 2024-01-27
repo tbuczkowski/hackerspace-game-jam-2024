@@ -80,6 +80,10 @@ List<String> soundTypeToFilename(SfxType type) {
       return const [
         'tires_squal_loop.m4a',
       ];
+    case SfxType.yoda:
+      return const [
+        'yoda.mp3',
+      ];
     case SfxType.jump:
       return const [
         'slightscream-08.flac',
@@ -114,7 +118,8 @@ double soundTypeToVolume(SfxType type) {
     case SfxType.jump:
       return 0.7;
     case SfxType.youDied:
-      return 1.5;
+    case SfxType.yoda:
+      return 1.0;
   }
 }
 
@@ -131,4 +136,5 @@ enum SfxType {
   step,
   jump,
   slide,
+  yoda,
 }

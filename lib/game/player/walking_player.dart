@@ -54,7 +54,7 @@ class WalkingPlayer extends Player {
   }
 
   void jump(double jumpHeight) {
-    if (jumpTime != null) {
+    if (jumpTime != null && game.health > 0) {
       game.audioController.playSfx(SfxType.jump);
       final double horizontalComponent = clampDouble(velocity.x.abs(), 250, 350);
       velocity.y = (-2 * jumpHeight * horizontalComponent) / (jumpDistance);
@@ -64,6 +64,9 @@ class WalkingPlayer extends Player {
 
   @override
   void update(double dt) {
+    if (game.health > 0 && position.y > 800) {
+      game.health = 0;
+    }
     final bool acceleratingInOppositeDirection =
         velocity.x.sign != horizontalDirection.sign && horizontalDirection != 0;
     final bool shouldDecelerate = horizontalDirection == 0 && velocity.x != 0;

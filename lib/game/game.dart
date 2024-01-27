@@ -118,7 +118,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   }
 
   void launchGameOver() {
-    audioController.playSfx(SfxType.huhsh);
+    audioController.playSfx(SfxType.yoda);
     _player.lockControls = true;
     _player.removeWhere((c) => c is ShapeHitbox);
     _player.jumpTime = 0;
