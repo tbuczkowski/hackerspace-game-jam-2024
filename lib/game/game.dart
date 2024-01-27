@@ -57,39 +57,6 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     return super.onLoad();
   }
 
-  // void loadGameSegments(double xPositionOffset) {
-  //   for (final block in level.blocks) {
-  //     switch (block.blockType) {
-  //       case GroundBlock:
-  //         world.add(
-  //           GroundBlock(
-  //             gridPosition: block.gridPosition,
-  //           ),
-  //         );
-  //         break;
-  //       case PlatformBlock:
-  //         world.add(PlatformBlock(
-  //           gridPosition: block.gridPosition,
-  //         ));
-  //         break;
-  //       case Star:
-  //         world.add(
-  //           Star(
-  //             gridPosition: block.gridPosition,
-  //           ),
-  //         );
-  //         break;
-  //       case WaterEnemy:
-  //         world.add(
-  //           WaterEnemy(
-  //             gridPosition: block.gridPosition,
-  //           ),
-  //         );
-  //         break;
-  //     }
-  //   }
-  // }
-
   void initializeGame() async {
     try {
       level = await _levelFactory.build(
@@ -103,12 +70,10 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     final segmentsToLoad = (size.x / 640).ceil();
     segmentsToLoad.clamp(0, level.blocks.length);
 
-    // loadGameSegments(0);
-
     _levelPainter.paintLevel(level);
 
     _player = Player(
-      position: Vector2(128, canvasSize.y - 256),
+      position: Vector2(level.startingPosition.x * 64, canvasSize.y - 256),
     );
     _cameraTarget = CameraTarget(player: _player);
 

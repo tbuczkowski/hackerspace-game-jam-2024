@@ -1,28 +1,16 @@
 import 'package:flame/components.dart' hide Block;
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
-import 'package:hackerspace_game_jam_2024/game/enemies.dart';
-import 'package:hackerspace_game_jam_2024/game/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
-import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
-import 'package:hackerspace_game_jam_2024/game/star.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_factory_consts.dart';
 import 'package:image/image.dart' as img;
 
 class LevelFactoryConfig {
   final Map<Color, Type> tileTypes;
-  final Color playerDef = Color(0x01FFFFFF);
-  final Color transparentDef = Color(0x01000000);
-  final int segmentSize = 640;
 
   LevelFactoryConfig(this.tileTypes);
 
-  factory LevelFactoryConfig.build() => LevelFactoryConfig({
-        Color(0x01FF0000): PlatformBlock,
-        Color(0x0100FF00): GroundBlock,
-        Color(0x010000FF): WaterEnemy,
-        Color(0x01FFFF00): Star,
-      });
+  factory LevelFactoryConfig.build() => LevelFactoryConfig(colorToBlockType);
 }
 
 class LevelFactory {
@@ -34,21 +22,19 @@ class LevelFactory {
     List<Block> blocks = [];
     Vector2? playerPosition;
 
-    int segmentSize = (factoryConfig.segmentSize / 64).ceil();
-
     img.Image levelBitmap = await _loadLevelBitmap(config);
 
     for (int x = 0; x < levelBitmap.width; x++) {
       for (int y = 0; y < levelBitmap.height; y++) {
         final Color c = _getPixelColor(levelBitmap.getPixel(x, y));
 
-        if (c == factoryConfig.transparentDef) {
+        if (c == transparentDef) {
           continue;
         }
 
-        if (c == factoryConfig.playerDef) {
-          playerPosition = Vector2(x.toDouble(),
-              ((y + levelBitmap.height) % levelBitmap.height).toDouble());
+        if (c == playerDef) {
+          playerPosition =
+              Vector2(x.toDouble(), (levelBitmap.height - y - 1).toDouble());
           continue;
         }
 
