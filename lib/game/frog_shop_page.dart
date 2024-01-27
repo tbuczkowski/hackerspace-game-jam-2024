@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/audio/audio_controller.dart';
 import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
+import 'package:hackerspace_game_jam_2024/style/my_button.dart';
 import 'package:provider/provider.dart';
 
 class FrogShopPage extends StatefulWidget {
@@ -22,15 +23,24 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
 
   void toNextLevel() {
     gameRef.overlays.remove('frog_shop');
-    gameRef.resumeEngine();
     GoRouter.of(context!).replace('/game_page');
   }
 
   @override
   Widget build(BuildContext context) {
-    var windowSize = MediaQuery.of(context).size;
-    return SizedBox.expand(
-        child: Image(width: windowSize.width, height: windowSize.height,
-        image: AssetImage('assets/images/frog_shop.png')));
+    return Stack(
+      children: [
+        SizedBox.expand(
+            child: Image(
+                fit: BoxFit.fill,
+                image: AssetImage('assets/images/frog_shop.png'))
+        ),
+        Container(
+            margin: EdgeInsets.zero,
+            padding: EdgeInsets.zero,
+            alignment: Alignment.bottomCenter,
+            child: MyButton(child: Text("Continue Journey"), onPressed: () => toNextLevel())),
+      ],
+    );
   }
 }
