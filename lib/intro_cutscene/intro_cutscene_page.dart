@@ -16,6 +16,8 @@ class IntroCutscenePage extends StatefulWidget {
 
 class _IntroCutscenePageState extends State<IntroCutscenePage> {
   final List scenes = [
+    AssetImage('assets/images/cutscenes/intro_1.png'),
+    AssetImage('assets/images/cutscenes/intro_2.png'),
     AssetImage('assets/images/cutscenes/intro_3.png'),
     AssetImage('assets/images/cutscenes/intro_4.png'),
     AssetImage('assets/images/cutscenes/intro_5.png'),
