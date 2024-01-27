@@ -35,7 +35,7 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
 
   SpriteAnimation updateAnimation() {
     const int movementThreshold = 50;
-    if(hitByEnemy) return _flinchAnimation;
+    if(iframesActive) return _flinchAnimation;
     if(velocity.y.abs() > movementThreshold) return _jumpAnimation;
     if(velocity.x.abs() > movementThreshold) return _runAnimation;
     return _idleAnimation;
