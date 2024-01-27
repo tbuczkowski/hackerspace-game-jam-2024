@@ -18,7 +18,9 @@ class _YouDiedPageState extends State<YouDiedPage> with SingleTickerProviderStat
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AudioController>().playSfx(SfxType.youDied, () {
-        GoRouter.of(context).go('/');
+        if (mounted) {
+          GoRouter.of(context).go('/');
+        }
       });
       setState(() {
         opacity = 1;

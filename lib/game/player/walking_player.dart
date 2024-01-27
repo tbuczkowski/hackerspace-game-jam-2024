@@ -29,14 +29,7 @@ class WalkingPlayer extends Player {
           (keysPressed.contains(LogicalKeyboardKey.keyD) || keysPressed.contains(LogicalKeyboardKey.arrowRight))
               ? 1
               : 0;
-      print((
-        prevDirection,
-        horizontalDirection,
-        velocity.x.abs(),
-        prevDirection.sign != horizontalDirection.sign,
-        horizontalDirection != 0,
-        velocity.x.abs() > 100
-      ));
+
       if (prevDirection.sign != horizontalDirection.sign &&
           horizontalDirection != 0 &&
           velocity.x.abs() > 100 &&
