@@ -49,7 +49,7 @@ List<String> soundTypeToFilename(SfxType type) {
       ];
     case SfxType.bonk:
       return const [
-        'bonk1.mp3',
+        'bonk1.m4a',
         'bonk2.flac',
         'bonk3.flac',
         'bonk4.flac',

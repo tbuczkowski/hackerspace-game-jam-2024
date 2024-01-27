@@ -6,8 +6,10 @@ import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 
-class KozakEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>, CollisionCallbacks {
+class KozakEnemy extends PositionComponent with HasGameReference<ASDGame>, CollisionCallbacks {
   final Vector2 gridPosition;
+
+  bool isDead = false;
 
   Vector2 velocity = Vector2.zero();
 
@@ -16,27 +18,30 @@ class KozakEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>
 
   int horizontalDirection = -1;
 
+  late final SpriteAnimationComponent spriteAnimationComponent;
+
   KozakEnemy({
     required this.gridPosition,
   }) : super(size: Vector2.all(64), anchor: Anchor.bottomLeft);
 
   @override
   void onLoad() {
-    animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('enemy/Walk.png'),
-      SpriteAnimationData.sequenced(
-        amount: 6,
-        textureSize: Vector2.all(48),
-        stepTime: 0.70,
-        texturePosition: Vector2(-10, 0)
-      ),
-    );
+    spriteAnimationComponent = SpriteAnimationComponent(
+        size: Vector2.all(64 * 1.5),
+        position: Vector2(-16, 64),
+        anchor: Anchor.bottomLeft,
+        animation: SpriteAnimation.fromFrameData(
+          game.images.fromCache('enemy/Walk.png'),
+          SpriteAnimationData.sequenced(
+              amount: 6, textureSize: Vector2.all(48), stepTime: 0.70, texturePosition: Vector2(-10, 0)),
+        ));
     position = Vector2(
       (gridPosition.x * size.x),
       game.size.y - (gridPosition.y * size.y),
     );
     add(RectangleHitbox(collisionType: CollisionType.passive));
     add(CircleHitbox());
+    add(spriteAnimationComponent);
   }
 
   @override
@@ -93,10 +98,11 @@ class KozakEnemy extends SpriteAnimationComponent with HasGameReference<ASDGame>
   }
 
   void kill() {
+    isDead = true;
     game.audioController.playSfx(SfxType.bonk);
     removeWhere((component) => component is ShapeHitbox);
     add(ScaleEffect.by(
-      Vector2(1.7, 0.12),
+      Vector2(1.8, 0.23),
       EffectController(
         duration: 0.07,
       ),

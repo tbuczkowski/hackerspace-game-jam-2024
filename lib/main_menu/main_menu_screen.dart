@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/game_state.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +26,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      context.read<AudioController>().playSfx(SfxType.swishSwish);
+      // context.read<AudioController>().playSfx(SfxType.swishSwish);
     });
     super.initState();
   }

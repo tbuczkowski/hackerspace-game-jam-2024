@@ -77,7 +77,7 @@ class AudioController {
   /// The controller will ignore this call when the attached settings'
   /// [SettingsController.audioOn] is `true` or if its
   /// [SettingsController.soundsOn] is `false`.
-  Future<void> playSfx(SfxType type) async {
+  void playSfx(SfxType type, [VoidCallback? onCompletion]) {
     _log.fine(() => 'Playing sound: $type');
     final options = soundTypeToFilename(type);
     final filename = options[_random.nextInt(options.length)];
@@ -85,10 +85,9 @@ class AudioController {
 
     final currentPlayer = _sfxPlayers[_currentSfxPlayer];
     _currentSfxPlayer = (_currentSfxPlayer + 1) % _sfxPlayers.length;
-    final Completer completer = Completer();
     currentPlayer.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.completed) {
-        completer.complete();
+        onCompletion?.call();
       }
     });
     currentPlayer.play(
@@ -96,7 +95,6 @@ class AudioController {
       volume: soundTypeToVolume(type),
       mode: PlayerMode.lowLatency,
     );
-    return completer.future;
   }
 
   /// Enables the [AudioController] to listen to [AppLifecycleState] events,

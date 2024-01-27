@@ -133,7 +133,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     return false;
   }
 
-  bool shouldReceiveHit(PositionComponent other) => other is KozakEnemy;
+  bool shouldReceiveHit(PositionComponent other) => other is KozakEnemy && !other.isDead;
 
   // This method runs an opacity effect on ember to make it blink.
   void hit() {
