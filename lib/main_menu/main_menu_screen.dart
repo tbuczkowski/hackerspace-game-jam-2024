@@ -24,15 +24,14 @@ class MainMenuScreen extends StatefulWidget {
 class _MainMenuScreenState extends State<MainMenuScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      context.read<AudioController>().musicPlayer.stop();
-    });
+    WidgetsBinding.instance!.addPostFrameCallback((_) {});
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
+    context.read<AudioController>().musicPlayer.stop();
 
     return Scaffold(
       backgroundColor: palette.backgroundMain,

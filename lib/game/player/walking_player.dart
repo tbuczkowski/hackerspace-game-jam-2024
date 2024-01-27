@@ -57,7 +57,7 @@ class WalkingPlayer extends Player {
 
   @override
   void update(double dt) {
-    if (game.health > 0 && position.y > 800) {
+    if (game.health > 0 && position.y > 1000) {
       game.health = 0;
     }
     final bool acceleratingInOppositeDirection =
