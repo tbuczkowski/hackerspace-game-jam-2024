@@ -30,6 +30,8 @@ class GameState {
   void nextLevel(int levelScore) {
     _totalScore += levelScore;
     _currentLevel++;
+    print('now level!!!!!!!!!!!!!!!!');
+    print(_currentLevel);
   }
 
   LevelConfig getCurrentLevelConfig() => _levels[_currentLevel];

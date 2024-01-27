@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/speech_component.dart';
@@ -61,6 +62,7 @@ class Hobo extends SpriteAnimationComponent
     if (other is Player && !_isSpeaking) {
       add(_speech);
       _isSpeaking = true;
+      game.audioController.playSfx(SfxType.blah);
     }
 
     super.onCollision(intersectionPoints, other);
