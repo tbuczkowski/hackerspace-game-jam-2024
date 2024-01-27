@@ -1,24 +1,24 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
+import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/speech_component.dart';
 
-class Hobo extends SpriteAnimationComponent
-    with CollisionCallbacks, HasGameReference<ASDGame> {
+class Hobo extends SpriteAnimationComponent with CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 gridPosition;
   final Vector2 velocity = Vector2.zero();
 
-  final SpeechComponent _speech = SpeechComponent(
-    'Pssst... Kierowniku...',
-    Vector2(-32, -96),
-  );
+  final Component _speech;
   bool _isSpeaking = false;
 
   Hobo({
     required this.gridPosition,
-  }) : super(size: Vector2.all(64), anchor: Anchor.bottomLeft);
+    String? speechText,
+  })  : _speech = SpeechComponent(speechText ?? 'Pssst... Kierowniku...', Vector2(-32, -96)),
+        super(size: Vector2.all(64), anchor: Anchor.bottomLeft);
 
   @override
   void onLoad() {
@@ -61,6 +61,7 @@ class Hobo extends SpriteAnimationComponent
     if (other is Player && !_isSpeaking) {
       add(_speech);
       _isSpeaking = true;
+      game.audioController.playSfx(SfxType.blah);
     }
 
     super.onCollision(intersectionPoints, other);

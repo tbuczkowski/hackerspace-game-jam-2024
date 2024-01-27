@@ -57,32 +57,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 MyButton(
                   onPressed: () {
                     GameState.reset();
-                    GoRouter.of(context).go('/game_page');
+                    GoRouter.of(context).go('/intro');
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: const Text('Play'),
                   ),
                 ),
-                // MainMenuScreen._gap,
-                // MyButton(
-                //   onPressed: () {
-                //     GoRouter.of(context).go('/3d_renderer');
-                //   },
-                //   child: const Text('3D Renderer'),
-                // ),
-                // MainMenuScreen._gap,
-                // MyButton(
-                //   onPressed: () {
-                //     GoRouter.of(context).go('/raymarching');
-                //   },
-                //   child: const Text('Raymarching'),
-                // ),
-                // MainMenuScreen._gap,
-                // MyButton(
-                //   onPressed: () => GoRouter.of(context).push('/settings'),
-                //   child: const Text('Settings'),
-                // ),
                 MainMenuScreen._gap,
                 MainMenuScreen._gap,
               ],

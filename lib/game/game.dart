@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -78,10 +79,19 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     return super.onLoad();
   }
 
+  final List songs = [
+    AssetSource('music/level1.mp3'),
+    AssetSource('music/scooter_level.mp3'),
+  ];
+
   Future<void> loadLevel() async {
     try {
       _gameState = await GameState.getInstance();
       final LevelConfig levelConfig = _gameState.getCurrentLevelConfig();
+      print(songs[_gameState.currentLevel % (songs.length + 1)]);
+      await audioController.musicPlayer.stop();
+      audioController.musicPlayer.setReleaseMode(ReleaseMode.loop);
+      audioController.musicPlayer.play(songs[_gameState.currentLevel % (songs.length + 1)]);
 
       print("Loading level ${_gameState.getCurrentLevelConfig().filename}");
       level = await _levelFactory.build(levelConfig);
@@ -112,7 +122,6 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       GameState.reset();
       GoRouter.of(buildContext!).replace('/');
     } else {
-
       pauseEngine();
       _gameState.nextLevel(currentScore);
       overlays.add('frog_shop');

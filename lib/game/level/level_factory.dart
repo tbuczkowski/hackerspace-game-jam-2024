@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flame/components.dart' hide Block;
 import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
@@ -32,9 +33,10 @@ class LevelFactory {
           continue;
         }
 
+        final Vector2 currentGridPos = Vector2(x.toDouble(), (levelBitmap.height - y - 1).toDouble());
+
         if (c == playerDef) {
-          playerPosition =
-              Vector2(x.toDouble(), (levelBitmap.height - y - 1).toDouble());
+          playerPosition = currentGridPos;
           continue;
         }
 
@@ -46,8 +48,10 @@ class LevelFactory {
         }
 
         blocks.add(Block(
-            Vector2(x.toDouble(), (levelBitmap.height - y - 1).toDouble()),
-            blockType));
+          currentGridPos,
+          blockType,
+          extras: _getExtras(config, currentGridPos),
+        ));
       }
     }
 
@@ -63,8 +67,10 @@ class LevelFactory {
     );
   }
 
-  Color _getPixelColor(img.Pixel p) =>
-      Color.fromRGBO(p.r.toInt(), p.g.toInt(), p.b.toInt(), p.a.toDouble());
+  SpeechDef? _getExtras(LevelConfig config, Vector2 gridPos) =>
+      config.speeches.firstWhereOrNull((s) => s.x == gridPos.x && s.y == gridPos.y);
+
+  Color _getPixelColor(img.Pixel p) => Color.fromRGBO(p.r.toInt(), p.g.toInt(), p.b.toInt(), p.a.toDouble());
 
   Future<img.Image> _loadLevelBitmap(LevelConfig config) async {
     ByteData byteData = await rootBundle.load(config.filename);
