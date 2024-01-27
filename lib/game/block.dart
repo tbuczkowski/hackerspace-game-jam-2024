@@ -17,8 +17,9 @@ class Block {
   // 10,10 is the upper right corner.
   final Vector2 gridPosition;
   final Type blockType;
+  final Object? extras;
 
-  Block(this.gridPosition, this.blockType);
+  Block(this.gridPosition, this.blockType, {this.extras});
 }
 
 Level demoLevel = Level(

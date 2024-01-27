@@ -13,7 +13,7 @@ class SpeechComponent extends TextBoxComponent {
         color: Color.fromRGBO(10, 10, 10, 1),
       ),
     ),
-    boxConfig: TextBoxConfig(timePerChar: 0.05),
+    boxConfig: TextBoxConfig(timePerChar: 0.05, maxWidth: 400),
     position: position,
     priority: 5,
   );
