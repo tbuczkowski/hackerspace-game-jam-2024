@@ -15,7 +15,7 @@ import 'package:hackerspace_game_jam_2024/game/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/player.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
 
-import 'BackgroundComponent.dart';
+import 'background_component.dart';
 
 class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
   late final Player _player;
