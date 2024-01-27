@@ -5,6 +5,7 @@ import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/wall_block.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
+import 'package:hackerspace_game_jam_2024/game/gate.dart';
 
 
 final Map<Color, Type> colorToBlockType = {
@@ -13,6 +14,7 @@ final Map<Color, Type> colorToBlockType = {
   Color(0x010000FF): WaterEnemy,
   Color(0x01FFFF00): Star,
   Color(0x01FF00FF): WallBlock,
+  Color(0x01c08040): Gate,
 };
 
 final Color playerDef = Color(0x01FFFFFF);

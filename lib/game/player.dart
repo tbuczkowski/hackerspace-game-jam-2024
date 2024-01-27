@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
+import 'package:hackerspace_game_jam_2024/game/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/star.dart';
 
 class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
@@ -105,6 +106,10 @@ class Player extends SpriteAnimationComponent with KeyboardHandler, CollisionCal
         // collision normal by separation distance.
         position += collisionNormal.scaled(separationDistance);
       }
+    }
+
+    if (other is Gate) {
+      game.changeLevel();
     }
 
     if (other is Star) {

@@ -1,6 +1,7 @@
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
+import 'package:hackerspace_game_jam_2024/game/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
@@ -25,6 +26,9 @@ class LevelPainter {
         )),
     WallBlock: (gameRef, block) => gameRef.world.add(WallBlock(
           gridPosition: block.gridPosition
+        )),
+    Gate: (gameRef, block) => gameRef.world.add(Gate(
+          gridPosition: block.gridPosition,
         ))
   };
 

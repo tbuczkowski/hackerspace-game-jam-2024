@@ -49,6 +49,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       'star.png',
       'water_enemy.png',
       'wall.png',
+      'gate.png'
     ]);
 
     initializeGame();
@@ -83,6 +84,10 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     camera.viewfinder.anchor = Anchor.center;
 
     add(BackgroundComponent());
+  }
+
+  void changeLevel() {
+    print("level change");
   }
 }
 
