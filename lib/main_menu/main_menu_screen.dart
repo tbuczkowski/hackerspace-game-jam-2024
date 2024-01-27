@@ -39,55 +39,56 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
     return Scaffold(
       backgroundColor: palette.backgroundMain,
-      body: ResponsiveScreen(
-        squarishMainArea: Center(
-          child: Transform.rotate(
-            angle: -0.1,
-            child: const Text(
-              'Flutter Game Template!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Permanent Marker',
-                fontSize: 55,
-                height: 1,
-              ),
+      body: Stack(
+        children: [
+          Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.red,
+              child: Image(
+                image: AssetImage('assets/images/splash.png'),
+                fit: BoxFit.fill,
+              )),
+          ResponsiveScreen(
+            squarishMainArea: SizedBox(),
+            rectangularMenuArea: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MyButton(
+                  onPressed: () {
+                    GameState.reset();
+                    GoRouter.of(context).go('/game_page');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: const Text('Play'),
+                  ),
+                ),
+                // MainMenuScreen._gap,
+                // MyButton(
+                //   onPressed: () {
+                //     GoRouter.of(context).go('/3d_renderer');
+                //   },
+                //   child: const Text('3D Renderer'),
+                // ),
+                // MainMenuScreen._gap,
+                // MyButton(
+                //   onPressed: () {
+                //     GoRouter.of(context).go('/raymarching');
+                //   },
+                //   child: const Text('Raymarching'),
+                // ),
+                // MainMenuScreen._gap,
+                // MyButton(
+                //   onPressed: () => GoRouter.of(context).push('/settings'),
+                //   child: const Text('Settings'),
+                // ),
+                MainMenuScreen._gap,
+                MainMenuScreen._gap,
+              ],
             ),
           ),
-        ),
-        rectangularMenuArea: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            MyButton(
-              onPressed: () {
-                GameState.reset();
-                GoRouter.of(context).go('/game_page');
-              },
-              child: const Text('Play'),
-            ),
-            MainMenuScreen._gap,
-            MyButton(
-              onPressed: () {
-                GoRouter.of(context).go('/3d_renderer');
-              },
-              child: const Text('3D Renderer'),
-            ),
-            MainMenuScreen._gap,
-            MyButton(
-              onPressed: () {
-                GoRouter.of(context).go('/raymarching');
-              },
-              child: const Text('Raymarching'),
-            ),
-            MainMenuScreen._gap,
-            MyButton(
-              onPressed: () => GoRouter.of(context).push('/settings'),
-              child: const Text('Settings'),
-            ),
-            MainMenuScreen._gap,
-            const Text('Music by Mr Smith'),
-            MainMenuScreen._gap,
-          ],
-        ),
+        ],
       ),
     );
   }
