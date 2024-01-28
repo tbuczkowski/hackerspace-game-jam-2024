@@ -7,6 +7,7 @@ import 'package:hackerspace_game_jam_2024/game/npc/hobo.dart';
 import 'package:hackerspace_game_jam_2024/game/player/scooter_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
@@ -29,14 +30,15 @@ class LevelPainter {
         )),
     KozakEnemy: (gameRef, block) => gameRef.world.add(KozakEnemy(
           gridPosition: block.gridPosition,
+          movementDef: block.extras as EnemyMovementDef?,
         )),
-    Hobo: (gameRef, block) =>
-        gameRef.world.add(Hobo(gridPosition: block.gridPosition, speechText: (block.extras as SpeechDef?)?.text)),
+    Hobo: (gameRef, block) => gameRef.world.add(Hobo(
+          gridPosition: block.gridPosition,
+          speechText: (block.extras as SpeechDef?)?.text,
+        )),
     WallBlock: (gameRef, block) => gameRef.world.add(WallBlock(gridPosition: block.gridPosition)),
-    FrogshopGate: (gameRef, block) {
-      // gameRef.world.add(FrogshopGate(gridPosition: block.gridPosition));
-      gameRef.world.add(FrogshopBackground(gridPosition: block.gridPosition));
-    },
+    FrogshopGate: (gameRef, block) => gameRef.world.add(FrogshopBackground(gridPosition: block.gridPosition)),
+    NPCMovementLimiter: (gameRef, block) => gameRef.world.add(NPCMovementLimiter(gridPosition: block.gridPosition)),
   };
 
   final ASDGame gameRef;

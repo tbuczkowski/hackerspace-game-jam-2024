@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/wall_block.dart';
@@ -11,6 +12,7 @@ import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 
 final Map<Color, Type> colorToBlockType = {
   Color(0x01FF0000): PlatformBlock,
+  Color(0x01C0C0C0): NPCMovementLimiter,
   Color(0x0100FF00): GroundBlock,
   Color(0x010000FF): KozakEnemy,
   Color(0x01FFFF00): Money,
