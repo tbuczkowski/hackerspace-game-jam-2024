@@ -1,0 +1,33 @@
+{
+  "filename": "assets/levels/tutorial.bmp",
+  "playerMovementType": "walking",
+  "speeches": [
+    {
+      "x": 4,
+      "y": 1,
+      "text": "Hello there Kierowniku!"
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "text": "Use space to jump and grab some cash from platform"
+    },
+    {
+      "x": 21,
+      "y": 5,
+      "text": "Jump on enemies to eliminate them. Do not let them take your Specjals!"
+    },
+    {
+      "x": 30,
+      "y": 1,
+      "text": "You can jump higher when you're running. Try it!"
+    }
+  ],
+  "enemyMovementPaths": [
+    {
+      "y": 1,
+      "leftXBoundary": 26,
+      "rightXBoundary": 40
+    }
+  ]
+}
