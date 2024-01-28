@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -14,10 +16,21 @@ class Hobo extends SpriteComponent with CollisionCallbacks, HasGameReference<ASD
   final Component _speech;
   bool _isSpeaking = false;
 
+  static const List<String> defaultSpeeches = [
+    'Pssst... Kierowniku...',
+    'Wnoszę wniosek formalny o poratowanie szlugiem',
+    'Królu złoty...',
+    'Szefie... jest sprawa...',
+  ];
+
+  static Random rand = Random.secure();
+
+  static String randomSpeech() => defaultSpeeches[rand.nextInt(defaultSpeeches.length)];
+
   Hobo({
     required this.gridPosition,
     String? speechText,
-  })  : _speech = SpeechComponent(speechText ?? 'Pssst... Kierowniku...', Vector2(-32, -96)),
+  })  : _speech = SpeechComponent(speechText ?? randomSpeech(), Vector2(-32, -96)),
         super(size: Vector2.all(64), anchor: Anchor.bottomLeft);
 
   @override

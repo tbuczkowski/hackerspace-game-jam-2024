@@ -51,11 +51,6 @@ class LevelFactory {
           continue;
         }
 
-        Object? extras = _getExtras(config, blockType, currentGridPos);
-        if (extras != null && extras is EnemyMovementDef && blockType == KozakEnemy) {
-          blockType = MahYntelygentEnemy;
-        }
-
         blocks.add(Block(
           currentGridPos,
           blockType,
@@ -81,7 +76,7 @@ class LevelFactory {
   Object? _getExtras(LevelConfig config, Type blockType, Vector2 gridPos) {
     if (blockType == Hobo) {
       return config.speeches.firstWhereOrNull((s) => s.x == gridPos.x && s.y == gridPos.y);
-    } else if (blockType == KozakEnemy) {
+    } else if (blockType == MahYntelygentEnemy) {
       return config.enemyMovements
           .firstWhereOrNull((m) => m.y == gridPos.y && m.rightXBoundary > gridPos.x && m.leftXBoundary < gridPos.x);
     }

@@ -36,66 +36,16 @@ class MahYntelygentEnemy extends BaseEnemy {
     add(RectangleHitbox(collisionType: CollisionType.passive));
     add(CircleHitbox());
     add(spriteAnimationComponent);
-    add(MoveAlongPathEffect(
-        Path()
-          ..quadraticBezierTo(movementDef.leftXBoundary * size.x, movementDef.y * size.y,
-              movementDef.rightXBoundary.toDouble() * size.x, movementDef.y * size.y),
+    add(
+      MoveEffect.by(
+        Vector2(-3 * size.x, 0),
         EffectController(
-          speed: maxXSpeed / 2,
+          duration: 3,
+          alternate: true,
           infinite: true,
         ),
-        oriented: true));
-  }
-
-  @override
-  void update(double dt) {
-    _OffendingDirection? boundsCheck = _canMove();
-    bool makeUTurn = false;
-
-    if (boundsCheck != null && horizontalDirection != boundsCheck.horizontalDirection) {
-      print("BoundCheck failed, next horizontal direction is ${boundsCheck.horizontalDirection}");
-      horizontalDirection = boundsCheck.horizontalDirection;
-      makeUTurn = true;
-    }
-
-    // final bool acceleratingInOppositeDirection =
-    //     velocity.x.sign != horizontalDirection.sign && horizontalDirection != 0;
-    // final bool shouldDecelerate = horizontalDirection == 0 && velocity.x != 0;
-    // velocity.x += horizontalDirection * acceleration * (acceleratingInOppositeDirection ? 3.5 : 1) * dt;
-    // velocity.x -=
-    //     shouldDecelerate ? (acceleration * 1.5 * dt).clamp(-velocity.x.abs(), velocity.x.abs()) * velocity.x.sign : 0;
-    // velocity.x = clampDouble(velocity.x, -maxXSpeed, maxXSpeed);
-
-    if (horizontalDirection < 0 && scale.x > 0) {
-      flipHorizontally();
-    } else if (horizontalDirection > 0 && scale.x < 0) {
-      flipHorizontally();
-    }
-
-    velocity.x = horizontalDirection * maxXSpeed;
-
-    if (!isDead) {
-      velocity.x -= makeUTurn
-          ? (BaseEnemy.acceleration * 1.5 * dt).clamp(-velocity.x.abs(), velocity.x.abs()) * velocity.x.sign
-          : 0;
-      position += velocity * dt.abs();
-    }
-
-    print("Enemy pos: $position, velocity: $velocity");
-
-    super.update(dt);
-  }
-
-  _OffendingDirection? _canMove() {
-    if (position.x <= ((movementDef.leftXBoundary + 1) * size.x)) {
-      return _OffendingDirection.left;
-    }
-
-    if (position.x >= ((movementDef.rightXBoundary - 1) * size.x)) {
-      return _OffendingDirection.right;
-    }
-
-    return null;
+      ),
+    );
   }
 
   @override
@@ -132,13 +82,4 @@ class MahYntelygentEnemy extends BaseEnemy {
     // collision normal by separation distance.
     position += collisionNormal.scaled(separationDistance);
   }
-}
-
-enum _OffendingDirection {
-  left(1),
-  right(-1);
-
-  final int horizontalDirection;
-
-  const _OffendingDirection(this.horizontalDirection);
 }
