@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/heart.dart';
 
+import 'time_left_component.dart';
+
 class Hud extends PositionComponent with HasGameReference<ASDGame> {
   Hud({
     super.position,
@@ -15,6 +17,7 @@ class Hud extends PositionComponent with HasGameReference<ASDGame> {
   });
 
   late TextComponent _scoreTextComponent;
+  late TextComponent _zappScoreTextComponent;
 
   @override
   Future<void> onLoad() async {
@@ -41,7 +44,7 @@ class Hud extends PositionComponent with HasGameReference<ASDGame> {
           scale: Vector2(1.5, 1.5)),
     );
 
-    for (var i = 1; i <= game.health; i++) {
+    for (var i = 1; i <= ASDGame.maxHealth; i++) {
       final positionX = 40 * i;
       await add(
         HeartHealthComponent(
@@ -51,10 +54,35 @@ class Hud extends PositionComponent with HasGameReference<ASDGame> {
         ),
       );
     }
+    await(add(TimeLeftComponent()));
+
+    _zappScoreTextComponent = TextComponent(
+      text: '${game.currentFrogPoints}',
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontSize: 32,
+          color: Color.fromRGBO(10, 10, 10, 1),
+        ),
+      ),
+      anchor: Anchor.center,
+      position: Vector2(game.size.x - 160, 20),
+    );
+    add(_zappScoreTextComponent);
+
+    final zappSprite = await game.loadSprite('zapps.png');
+    add(
+      SpriteComponent(
+          sprite: zappSprite,
+          position: Vector2(game.size.x - 200, 20),
+          size: Vector2.all(24),
+          anchor: Anchor.center,
+          scale: Vector2(1.5, 1.5)),
+    );
   }
 
   @override
   void update(double dt) {
     _scoreTextComponent.text = '${game.currentScore}';
+    _zappScoreTextComponent.text = "${game.currentFrogPoints}";
   }
 }

@@ -29,8 +29,6 @@ class GameState {
   void nextLevel(int levelScore) {
     _totalScore += levelScore;
     currentLevel++;
-    print('now level!!!!!!!!!!!!!!!!');
-    print(currentLevel);
   }
 
   LevelConfig getCurrentLevelConfig() => _levels[currentLevel];
@@ -38,4 +36,6 @@ class GameState {
   bool isLastLevel() => currentLevel + 1 == _levels.length;
 
   int get totalScore => _totalScore;
+
+  int timeLeft = 300;
 }

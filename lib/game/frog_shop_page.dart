@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/audio/audio_controller.dart';
@@ -8,6 +9,8 @@ import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/style/my_button.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:provider/provider.dart';
+
+import 'game_state.dart';
 
 class FrogShopPage extends StatefulWidget {
   const FrogShopPage(this.gameRef, {super.key});
@@ -25,6 +28,18 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
   List<int> boughtProducts = [];
 
   _FrogShopPageState(this.gameRef);
+  late final GameState _state;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _state = await GameState.getInstance();
+      var musicPlayer = gameRef.audioController.musicPlayer;
+      await musicPlayer.stop();
+      await musicPlayer.play(AssetSource('music/A Brief Respite (Camp Theme).mp3'));
+    });
+    super.initState();
+  }
 
   void progressDialog(String newDialog) {
     setState(() {
@@ -32,9 +47,11 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
     });
   }
 
-  void toNextStage() {
+  void toNextStage() async {
     gameRef.overlays.remove('frog_shop');
     GoRouter.of(context!).replace('/game_page');
+    boughtProducts.clear();
+    await gameRef.audioController.musicPlayer.stop();
   }
 
   TypewriterAnimatedText TypedAnimation(String content) {
@@ -193,7 +210,10 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
                 ProductToBuy(
                   "assets/images/shop/monsterek.png",
                   () => BuyProduct(2, 0),
-                  () => setState(() => gameRef.health = min(gameRef.health + 2, ASDGame.maxHealth))
+                  () => setState(() {
+                    gameRef.health = min(gameRef.health + 2, ASDGame.maxHealth);
+                    _state.timeLeft += 10;
+                  })
                 ),
                 ProductToBuy(
                   "assets/images/shop/specek.png",
@@ -202,10 +222,10 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
                 ProductToBuy(
                   "assets/images/shop/szlugi.png",
                   () => BuyProduct(7, 2),
-                    () => setState(() {
-                      gameRef.currentFrogPoints += 5;
-                      gameRef.health -= 1;
-                    }))
+                  () => setState(() {
+                    gameRef.currentFrogPoints += 5;
+                    gameRef.health -= 1;
+                  }))
               ],
             ),
             Row(

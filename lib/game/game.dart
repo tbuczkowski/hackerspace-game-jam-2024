@@ -37,6 +37,9 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   int currentFrogPoints = 0;
   static const int maxHealth = 5;
   int _health = maxHealth;
+  Stopwatch timer = Stopwatch();
+  late int timeLeft = _gameState.timeLeft;
+
 
   int get health => _health;
 
@@ -125,6 +128,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     camera.viewfinder.anchor = Anchor.center;
 
     add(BackgroundComponent());
+    timer.start();
   }
 
   void changeLevel() async {
@@ -133,6 +137,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       GoRouter.of(buildContext!).replace('/');
     } else {
       pauseEngine();
+      _gameState.timeLeft = timeLeft;
       _gameState.nextLevel(currentScore);
       overlays.add('frog_shop');
     }
@@ -153,6 +158,11 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
 
   @override
   void update(double dt) {
+    timeLeft = _gameState.timeLeft - timer.elapsed.inSeconds;
+    if(timeLeft <= 0) {
+      launchGameOver();
+      //todo mby different gameover overlay from MGS?
+    }
     if (_player is ScooterPlayer) {
       handleScooterCollision();
     }
