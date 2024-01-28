@@ -29,8 +29,10 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
   late final SpriteAnimation jumpAnimation;
   late final SpriteAnimation _flinchAnimation;
 
+  final Vector2 gridPosition;
+
   Player({
-    required super.position,
+    required this.gridPosition,
   }) : super(size: Vector2.all(64), anchor: Anchor.center) {
     spriteAnimationComponent = SpriteAnimationComponent(
       // size: size,
@@ -69,6 +71,11 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     _flinchAnimation = loadAnimation('character/hurt.png', 2, positionOffset: Vector2(-5, 0));
     jumpAnimation = loadAnimation('character/jump.png', 4, loop: false);
     spriteAnimationComponent.animation = _idleAnimation;
+
+    position = Vector2(
+      (gridPosition.x * size.x),
+      game.size.y - ((gridPosition.y + 1) * size.y),
+    );
 
     add(CircleHitbox(radius: 48 / 2, position: Vector2(8, 16)));
     add(spriteAnimationComponent);

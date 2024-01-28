@@ -16,7 +16,7 @@ class WalkingPlayer extends Player {
 
   bool jumpIsPressed = false;
 
-  WalkingPlayer({required super.position});
+  WalkingPlayer({required super.gridPosition});
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {

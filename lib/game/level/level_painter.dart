@@ -72,8 +72,8 @@ class LevelPainter {
     Vector2 position = level.startingPosition * 64;
 
     Player player = (level.playerMovementType == PlayerMovementType.walking)
-        ? WalkingPlayer(position: position)
-        : ScooterPlayer(position: position);
+        ? WalkingPlayer(gridPosition: level.startingPosition)
+        : ScooterPlayer(gridPosition: level.startingPosition);
 
     gameRef.world.add(player);
 
