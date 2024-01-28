@@ -1,3 +1,4 @@
+import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/levels.dart';
 
@@ -10,6 +11,10 @@ class GameState {
       await _instance!.initialize();
     }
 
+    return _instance!;
+  }
+
+  static GameState realInstance() {
     return _instance!;
   }
 
@@ -38,4 +43,7 @@ class GameState {
   int get totalScore => _totalScore;
 
   int timeLeft = 300;
+  int health = ASDGame.maxHealth;
+  int currentFrogPoints = 0;
+  int currentScore = 0;
 }

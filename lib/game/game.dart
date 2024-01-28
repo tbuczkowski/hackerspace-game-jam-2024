@@ -33,10 +33,10 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   late UniqueKey lastBlockKey;
   late Level level;
   late LevelPainter _levelPainter;
-  int currentScore = 0;
-  int currentFrogPoints = 0;
+  late int currentScore = gameState.currentScore;
+  late int currentFrogPoints = gameState.currentFrogPoints;
   static const int maxHealth = 5;
-  int _health = maxHealth;
+  late int _health = gameState.health;
   Stopwatch timer = Stopwatch();
   late int timeLeft = gameState.timeLeft;
 
@@ -141,6 +141,9 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
     } else {
       pauseEngine();
       gameState.timeLeft = timeLeft;
+      gameState.health = health;
+      gameState.currentScore = currentScore;
+      gameState.currentFrogPoints = currentFrogPoints;
       gameState.nextLevel(currentScore);
       overlays.add('frog_shop');
     }

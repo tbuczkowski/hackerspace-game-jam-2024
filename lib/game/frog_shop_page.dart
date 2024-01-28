@@ -28,12 +28,12 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
   List<int> boughtProducts = [];
 
   _FrogShopPageState(this.gameRef);
-  late final GameState _state;
+  GameState _state = GameState.realInstance();
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _state = await GameState.getInstance();
+
       var musicPlayer = gameRef.audioController.musicPlayer;
       await musicPlayer.stop();
       await musicPlayer.play(AssetSource('music/A Brief Respite (Camp Theme).mp3'));
@@ -114,17 +114,17 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
   }
 
   Widget HpLabel() {
-    var hp = gameRef.health;
+    var hp = _state.health;
     return TextLabel("HP: $hp");
   }
 
   Widget MoneyLabel() {
-    var score = gameRef.currentScore;
+    var score = _state.currentScore;
     return TextLabel("Money: $score");
   }
 
   Widget PointLabel() {
-    var currentFrogPoints = gameRef.currentFrogPoints;
+    var currentFrogPoints = _state.currentFrogPoints;
     return TextLabel("Żapp points: $currentFrogPoints");
   }
 
@@ -138,10 +138,10 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
   }
 
   void BuyProduct(int price, int index, Function affectPlayer) {
-    if(price <= gameRef.currentScore) {
-      gameRef.currentScore -= price;
+    if(price <= _state.currentScore) {
+      _state.currentScore -= price;
       var saleMultiplies = calculateMultiplier();
-      gameRef.currentFrogPoints += price * saleMultiplies;
+      _state.currentFrogPoints += price * saleMultiplies;
       boughtProducts.add(index);
       affectPlayer();
     }
@@ -213,7 +213,7 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
                   0,
                   "Good when you're in a hurry or wounded: +10 seconds, +2HP",
                   () => setState(() {
-                    gameRef.health = min(gameRef.health + 2, ASDGame.maxHealth);
+                    _state.health = min(_state.health + 2, ASDGame.maxHealth);
                     _state.timeLeft += 10;
                   })
                 ),
@@ -222,15 +222,15 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
                   4,
                   1,
                   "Piwerko gud&cheap, Gdańsk special, a little extra żappsy: +2 extra żappsy",
-                  () => setState(() => gameRef.currentFrogPoints += 2)),
+                  () => setState(() => _state.currentFrogPoints += 2)),
                 ProductToBuy(
                   "assets/images/shop/szlugi.png",
                   7,
                   2,
                   "Smoking zabija, ale gives żappsy: -1HP, +5 extra żappsy",
                   () => setState(() {
-                    gameRef.currentFrogPoints += 5;
-                    gameRef.health -= 1;
+                    _state.currentFrogPoints += 5;
+                    _state.health -= 1;
                   }))
               ],
             ),
