@@ -4,6 +4,7 @@ import 'package:flame/effects.dart';
 import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/base_enemy.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/water.dart';
@@ -150,7 +151,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
     return false;
   }
 
-  bool shouldReceiveHit(PositionComponent other) => other is KozakEnemy && !other.isDead;
+  bool shouldReceiveHit(PositionComponent other) => other is BaseEnemy && !other.isDead;
 
   // This method runs an opacity effect on ember to make it blink.
   void hit() {

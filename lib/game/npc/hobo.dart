@@ -7,7 +7,7 @@ import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/speech_component.dart';
 
-class Hobo extends SpriteAnimationComponent with CollisionCallbacks, HasGameReference<ASDGame> {
+class Hobo extends SpriteComponent with CollisionCallbacks, HasGameReference<ASDGame> {
   final Vector2 gridPosition;
   final Vector2 velocity = Vector2.zero();
 
@@ -22,14 +22,9 @@ class Hobo extends SpriteAnimationComponent with CollisionCallbacks, HasGameRefe
 
   @override
   void onLoad() {
-    animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('hobo.png'),
-      SpriteAnimationData.sequenced(
-        amount: 2,
-        textureSize: Vector2.all(16),
-        stepTime: 0.70,
-      ),
-    );
+    var image = game.images.fromCache('blahblahblahmus.png');
+    sprite = Sprite(image);
+
     position = Vector2(
       (gridPosition.x * size.x),
       game.size.y - (gridPosition.y * size.y),

@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory_consts.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/base_enemy.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/hobo.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/mah_yntelygent_enemy.dart';
 import 'package:image/image.dart' as img;
 
 class LevelFactoryConfig {
@@ -49,6 +51,11 @@ class LevelFactory {
           continue;
         }
 
+        Object? extras = _getExtras(config, blockType, currentGridPos);
+        if (extras != null && extras is EnemyMovementDef && blockType == KozakEnemy) {
+          blockType = MahYntelygentEnemy;
+        }
+
         blocks.add(Block(
           currentGridPos,
           blockType,
@@ -60,6 +67,8 @@ class LevelFactory {
     if (playerPosition == null) {
       print("player position not found, setting default!");
       playerPosition = Vector2(1, 1);
+    } else {
+      print('Starting position is $playerPosition');
     }
 
     return Level(

@@ -4,7 +4,9 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:hackerspace_game_jam_2024/audio/sounds.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/base_enemy.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/mah_yntelygent_enemy.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 
 class WalkingPlayer extends Player {
@@ -88,7 +90,7 @@ class WalkingPlayer extends Player {
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is KozakEnemy && !iframesActive && intersectionPoints.length == 2) {
+    if (other is BaseEnemy && !iframesActive && intersectionPoints.length == 2) {
       final Vector2 mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
 
       final collisionNormal = absoluteCenter - mid;

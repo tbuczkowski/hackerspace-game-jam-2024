@@ -5,6 +5,8 @@ import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/hobo.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/mah_yntelygent_enemy.dart';
+import 'package:hackerspace_game_jam_2024/game/player/scooter_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/scooter_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
@@ -40,6 +42,10 @@ class LevelPainter {
           gridPosition: block.gridPosition,
           // movementDef: block.extras as EnemyMovementDef?,
         )),
+    MahYntelygentEnemy: (gameRef, block) => gameRef.world.add(MahYntelygentEnemy(
+      gridPosition: block.gridPosition,
+      movementDef: block.extras as EnemyMovementDef?,
+    )),
     Hobo: (gameRef, block) => gameRef.world.add(Hobo(
           gridPosition: block.gridPosition,
           speechText: (block.extras as SpeechDef?)?.text,
