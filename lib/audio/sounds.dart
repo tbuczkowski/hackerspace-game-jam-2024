@@ -96,11 +96,15 @@ List<String> soundTypeToFilename(SfxType type) {
         'slightscream-15.flac',
       ];
     case SfxType.frogTalk: return const [
-      'sfx/animal crossing talk.mp3'
+      'animal_crossing_talk.mp3'
     ];
     case SfxType.blah:
       return const [
         'blahblahblahmus.mp3',
+      ];
+    case SfxType.camp:
+      return const [
+        'A Brief Respite (Camp Theme).mp3'
       ];
   }
 }
@@ -127,8 +131,8 @@ double soundTypeToVolume(SfxType type) {
     case SfxType.blah:
     case SfxType.youDied:
     case SfxType.yoda:
-      return 1.0;
     case SfxType.frogTalk:
+    case SfxType.camp:
       return 1.0;
   }
 }
@@ -148,5 +152,6 @@ enum SfxType {
   slide,
   yoda,
   blah,
-  frogTalk
+  frogTalk,
+  camp
 }

@@ -32,12 +32,11 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-
-      var musicPlayer = gameRef.audioController.musicPlayer;
-      await musicPlayer.stop();
-      await musicPlayer.play(AssetSource('music/A Brief Respite (Camp Theme).mp3'));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AudioController>().musicPlayer.stop();
+      //context.read<AudioController>().musicPlayer.play(AssetSource('music/A Brief Respite (Camp Theme).mp3'));
       context.read<AudioController>().playSfx(SfxType.frogTalk);
+      context.read<AudioController>().playSfx(SfxType.camp);
     });
     super.initState();
   }
