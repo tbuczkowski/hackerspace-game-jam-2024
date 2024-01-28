@@ -63,7 +63,7 @@ class LevelPainter {
   }
 
   Player paintPlayer(Level level) {
-    Vector2 position = level.startingPosition * 128;
+    Vector2 position = level.startingPosition * 64;
 
     Player player = (level.playerMovementType == PlayerMovementType.walking)
         ? WalkingPlayer(position: position)
