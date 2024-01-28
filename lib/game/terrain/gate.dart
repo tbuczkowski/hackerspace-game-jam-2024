@@ -19,7 +19,7 @@ class FrogshopGate extends SpriteComponent with HasGameReference<ASDGame> {
       (gridPosition.x * size.x) + (size.x / 2),
       game.size.y - (gridPosition.y * size.y) - (size.y / 2),
     );
-    add(RectangleHitbox(collisionType: CollisionType.passive));
+    add(RectangleHitbox(collisionType: CollisionType.passive, size: Vector2.all(10)));
   }
 
   @override
@@ -30,7 +30,7 @@ class FrogshopGate extends SpriteComponent with HasGameReference<ASDGame> {
   }
 }
 
-class FrogshopBackground extends SpriteComponent with HasGameReference<ASDGame> {
+class FrogshopBackground extends PositionComponent with HasGameReference<ASDGame> {
   final Vector2 gridPosition;
 
   final Vector2 velocity = Vector2.zero();
@@ -42,12 +42,17 @@ class FrogshopBackground extends SpriteComponent with HasGameReference<ASDGame> 
   @override
   void onLoad() {
     final starImage = game.images.fromCache('frogshop.png');
-    sprite = Sprite(starImage);
+    final sprite = Sprite(starImage);
     position = Vector2(
       ((gridPosition.x - 2) * 64) + (size.x / 2),
       game.size.y - ((gridPosition.y - 0.5) * 64) - (size.y / 2),
     );
-    add(RectangleHitbox(collisionType: CollisionType.passive));
+    add(SpriteComponent(sprite: sprite, size: size, anchor: Anchor.topLeft));
+    add(RectangleHitbox(
+        collisionType: CollisionType.passive,
+        size: Vector2(64, 128),
+        anchor: Anchor.bottomCenter,
+        position: Vector2(size.x / 2, size.y - 32)));
   }
 
   @override
