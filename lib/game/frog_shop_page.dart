@@ -37,6 +37,7 @@ class _FrogShopPageState extends State<FrogShopPage> with SingleTickerProviderSt
       var musicPlayer = gameRef.audioController.musicPlayer;
       await musicPlayer.stop();
       await musicPlayer.play(AssetSource('music/A Brief Respite (Camp Theme).mp3'));
+      context.read<AudioController>().playSfx(SfxType.frogTalk);
     });
     super.initState();
   }
