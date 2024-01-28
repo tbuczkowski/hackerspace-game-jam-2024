@@ -1,20 +1,21 @@
 import 'package:flame/components.dart' hide Block;
 import 'package:hackerspace_game_jam_2024/game/block.dart';
-import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
-import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_config.dart';
+import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
+import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/hobo.dart';
-import 'package:hackerspace_game_jam_2024/game/player/scooter_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/player.dart';
+import 'package:hackerspace_game_jam_2024/game/player/scooter_player.dart';
 import 'package:hackerspace_game_jam_2024/game/player/walking_player.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/base_terrain.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
-import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/ulica_block.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/wall_block.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/water.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/money.dart';
-import 'package:hackerspace_game_jam_2024/game/terrain/wall_block.dart';
 
 typedef _PaintBlock = Function(ASDGame, Block);
 
@@ -26,9 +27,15 @@ class LevelPainter {
     PlatformBlock: (gameRef, block) => gameRef.world.add(PlatformBlock(
           gridPosition: block.gridPosition,
         )),
-    Money: (gameRef, block) => gameRef.world.add(Money(
-          gridPosition: block.gridPosition,
-        )),
+    Money: (gameRef, block) {
+      final String level = gameRef.gameState.getCurrentLevelConfig().filename;
+      if (level == 'assets/levels/scooter_level.bmp') {
+        gameRef.world.add(UlicaBlock(gridPosition: block.gridPosition));
+      }
+      return gameRef.world.add(Money(
+        gridPosition: block.gridPosition,
+      ));
+    },
     KozakEnemy: (gameRef, block) => gameRef.world.add(KozakEnemy(
           gridPosition: block.gridPosition,
           // movementDef: block.extras as EnemyMovementDef?,
@@ -41,6 +48,7 @@ class LevelPainter {
     FrogshopGate: (gameRef, block) => gameRef.world.add(FrogshopBackground(gridPosition: block.gridPosition)),
     NPCMovementLimiter: (gameRef, block) => gameRef.world.add(NPCMovementLimiter(gridPosition: block.gridPosition)),
     WaterBlock: (gameRef, block) => gameRef.world.add(WaterBlock(gridPosition: block.gridPosition)),
+    UlicaBlock: (gameRef, block) => gameRef.world.add(UlicaBlock(gridPosition: block.gridPosition)),
   };
 
   final ASDGame gameRef;

@@ -26,7 +26,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   final AudioController audioController;
   late final Player _player;
   late final CameraTarget _cameraTarget;
-  late final GameState _gameState;
+  late final GameState gameState;
 
   double objectSpeed = 0.0;
   late double lastBlockXPosition = 0.0;
@@ -38,7 +38,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   static const int maxHealth = 5;
   int _health = maxHealth;
   Stopwatch timer = Stopwatch();
-  late int timeLeft = _gameState.timeLeft;
+  late int timeLeft = gameState.timeLeft;
 
   int get health => _health;
 
@@ -84,7 +84,8 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
       'shop/monsterek.png',
       'shop/specek.png',
       'shop/szlugi.png',
-      'wodiczka.png'
+      'wodiczka.png',
+      'street.png',
     ]);
 
     await initializeGame();
@@ -99,14 +100,14 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
 
   Future<void> loadLevel() async {
     try {
-      _gameState = await GameState.getInstance();
-      final LevelConfig levelConfig = _gameState.getCurrentLevelConfig();
-      print(songs[_gameState.currentLevel % songs.length]);
+      gameState = await GameState.getInstance();
+      final LevelConfig levelConfig = gameState.getCurrentLevelConfig();
+      print(songs[gameState.currentLevel % songs.length]);
       await audioController.musicPlayer.stop();
       audioController.musicPlayer.setReleaseMode(ReleaseMode.loop);
-      audioController.musicPlayer.play(songs[_gameState.currentLevel % songs.length]);
+      audioController.musicPlayer.play(songs[gameState.currentLevel % songs.length]);
 
-      print("Loading level ${_gameState.getCurrentLevelConfig().filename}");
+      print("Loading level ${gameState.getCurrentLevelConfig().filename}");
       level = await _levelFactory.build(levelConfig);
     } catch (ex) {
       level = demoLevel;
@@ -132,13 +133,13 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   }
 
   void changeLevel() async {
-    if (_gameState.isLastLevel()) {
+    if (gameState.isLastLevel()) {
       GameState.reset();
       GoRouter.of(buildContext!).replace('/outro');
     } else {
       pauseEngine();
-      _gameState.timeLeft = timeLeft;
-      _gameState.nextLevel(currentScore);
+      gameState.timeLeft = timeLeft;
+      gameState.nextLevel(currentScore);
       overlays.add('frog_shop');
     }
   }
@@ -158,7 +159,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
 
   @override
   void update(double dt) {
-    timeLeft = _gameState.timeLeft - timer.elapsed.inSeconds;
+    timeLeft = gameState.timeLeft - timer.elapsed.inSeconds;
     if (timeLeft <= 0) {
       launchGameOver();
       //todo mby different gameover overlay from MGS?
