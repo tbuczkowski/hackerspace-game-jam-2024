@@ -31,7 +31,7 @@ class LevelPainter {
         )),
     KozakEnemy: (gameRef, block) => gameRef.world.add(KozakEnemy(
           gridPosition: block.gridPosition,
-          movementDef: block.extras as EnemyMovementDef?,
+          // movementDef: block.extras as EnemyMovementDef?,
         )),
     Hobo: (gameRef, block) => gameRef.world.add(Hobo(
           gridPosition: block.gridPosition,
