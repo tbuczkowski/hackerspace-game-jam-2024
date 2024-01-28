@@ -12,6 +12,7 @@ import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/ground_block.dart';
 import 'package:hackerspace_game_jam_2024/game/level/level_factory.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/platform_block.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/water.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/money.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/wall_block.dart';
 
@@ -39,6 +40,7 @@ class LevelPainter {
     WallBlock: (gameRef, block) => gameRef.world.add(WallBlock(gridPosition: block.gridPosition)),
     FrogshopGate: (gameRef, block) => gameRef.world.add(FrogshopBackground(gridPosition: block.gridPosition)),
     NPCMovementLimiter: (gameRef, block) => gameRef.world.add(NPCMovementLimiter(gridPosition: block.gridPosition)),
+    WaterBlock: (gameRef, block) => gameRef.world.add(WaterBlock(gridPosition: block.gridPosition)),
   };
 
   final ASDGame gameRef;
