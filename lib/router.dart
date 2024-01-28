@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hackerspace_game_jam_2024/3d_renderer/3d_renderer_page.dart';
 import 'package:hackerspace_game_jam_2024/game/game_page.dart';
 import 'package:hackerspace_game_jam_2024/intro_cutscene/intro_cutscene_page.dart';
+import 'package:hackerspace_game_jam_2024/intro_cutscene/outo_cutscene_page.dart';
 import 'package:hackerspace_game_jam_2024/main_menu/main_menu_screen.dart';
 import 'package:hackerspace_game_jam_2024/raymarching/raymarching2d_page.dart';
 
@@ -40,6 +41,10 @@ final router = GoRouter(
         GoRoute(
           path: 'intro',
           builder: (context, state) => const IntroCutscenePage(key: Key('intro')),
+        ),
+        GoRoute(
+          path: 'outro',
+          builder: (context, state) => const OutroCutscenePage(key: Key('outro')),
         ),
       ],
     ),

@@ -40,7 +40,6 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   Stopwatch timer = Stopwatch();
   late int timeLeft = _gameState.timeLeft;
 
-
   int get health => _health;
 
   set health(int value) {
@@ -134,7 +133,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   void changeLevel() async {
     if (_gameState.isLastLevel()) {
       GameState.reset();
-      GoRouter.of(buildContext!).replace('/');
+      GoRouter.of(buildContext!).replace('/outro');
     } else {
       pauseEngine();
       _gameState.timeLeft = timeLeft;
@@ -159,7 +158,7 @@ class ASDGame extends FlameGame with HasCollisionDetection, HasKeyboardHandlerCo
   @override
   void update(double dt) {
     timeLeft = _gameState.timeLeft - timer.elapsed.inSeconds;
-    if(timeLeft <= 0) {
+    if (timeLeft <= 0) {
       launchGameOver();
       //todo mby different gameover overlay from MGS?
     }
