@@ -1,6 +1,6 @@
 import 'package:hackerspace_game_jam_2024/game/utils/file_utils.dart';
 
-enum PlayerMovementType { walking, flying }
+enum PlayerMovementType { walking, doingAZooooom }
 
 class SpeechDef {
   final int x;

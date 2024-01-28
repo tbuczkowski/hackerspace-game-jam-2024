@@ -6,6 +6,7 @@ import 'package:hackerspace_game_jam_2024/game/block.dart';
 import 'package:hackerspace_game_jam_2024/game/game.dart';
 import 'package:hackerspace_game_jam_2024/game/npc/enemies.dart';
 import 'package:hackerspace_game_jam_2024/game/terrain/gate.dart';
+import 'package:hackerspace_game_jam_2024/game/terrain/water.dart';
 import 'package:hackerspace_game_jam_2024/game/ui/money.dart';
 
 class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks, HasGameReference<ASDGame> {
@@ -141,7 +142,7 @@ class Player extends PositionComponent with KeyboardHandler, CollisionCallbacks,
   }
 
   bool leaveLevel(PositionComponent other) {
-    if (other is FrogshopGate || other is FrogshopBackground) {
+    if (other is FrogshopGate || other is FrogshopBackground || other is WaterBlock) {
       game.changeLevel();
       return true;
     }
