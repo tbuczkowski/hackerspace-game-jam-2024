@@ -46,6 +46,7 @@ flutter:
     - assets/images/cutscenes/
     - assets/images/character/
     - assets/images/enemy/
+    - assets/images/enemy2/
     - assets/images/shop/
     - assets/images/background/
     - assets/music/

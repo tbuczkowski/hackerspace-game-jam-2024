@@ -11,7 +11,7 @@ class ScooterPlayer extends Player {
   static const ridingSpeed = 100;
   final double maxYSpeed = 20;
 
-  ScooterPlayer({required super.position});
+  ScooterPlayer({required super.gridPosition});
 
   late SpriteComponent hulajkaComponent;
 
@@ -20,6 +20,11 @@ class ScooterPlayer extends Player {
     final hulajka = await game.loadSprite(
       'hulajka.png',
       srcSize: Vector2(201, 205),
+    );
+
+    position = Vector2(
+      (gridPosition.x * size.x),
+      game.size.y - ((gridPosition.y + 1) * size.y),
     );
 
     hulajkaComponent = SpriteComponent(
